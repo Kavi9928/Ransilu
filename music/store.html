@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ransilu Music Store - Albums, singles, and featured collections.">
+    <title>Ransilu Music | Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .store-hero {
+            position: relative;
+            min-height: 54vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 45%, #eef2ff 100%);
+            padding: calc(68px + 1rem) 0 2.25rem;
+            overflow: hidden;
+        }
+        .store-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 12% 20%, rgba(37,99,235,0.11), transparent 45%),
+                        radial-gradient(circle at 84% 78%, rgba(29,78,216,0.11), transparent 40%);
+        }
+        .store-hero-content { position: relative; z-index: 1; padding-top: 0.5rem; }
+        .store-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3.6rem, 8vw, 6.2rem);
+            line-height: 0.88;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+        .store-hero p { color: var(--muted); max-width: 640px; line-height: 1.8; }
+
+        .section-intro {
+            max-width: 760px;
+            margin: 0 auto 1.5rem;
+            text-align: center;
+        }
+        .section-intro h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 4vw, 4rem);
+            letter-spacing: 2px;
+            line-height: 0.95;
+            margin-bottom: 0.65rem;
+        }
+        .section-intro p {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .store-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .store-header-row .section-intro {
+            margin: 0;
+            text-align: left;
+            max-width: 620px;
+        }
+        .store-search-wrap {
+            flex: 1;
+            max-width: 620px;
+            margin-left: auto;
+            padding-top: 0.2rem;
+        }
+
+        .search-panel {
+            margin-top: 0;
+            position: relative;
+            z-index: 3;
+        }
+        .search-shell {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr auto;
+            gap: 0.8rem;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 0.8rem;
+            box-shadow: 0 12px 28px rgba(2,6,23,0.08);
+        }
+        .search-field,
+        .search-select {
+            height: 46px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0 0.95rem;
+            font: 500 0.9rem var(--font);
+            color: var(--text);
+            background: #fff;
+        }
+        .search-btn {
+            height: 46px;
+            padding: 0 1.25rem;
+            border-radius: 10px;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+        }
+
+        .collections-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        .collection-card {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(2,6,23,0.06);
+        }
+        .collection-card img { width: 100%; height: 190px; object-fit: cover; }
+        .collection-body { padding: 1rem; }
+        .collection-body h3 { font-size: 1rem; font-weight: 800; margin-bottom: 0.35rem; }
+        .collection-body p { font-size: 0.84rem; color: var(--muted); }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+        }
+        .product-card {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            border: 1px solid var(--border);
+            transition: transform .28s ease, box-shadow .28s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(2,6,23,0.1);
+        }
+        .product-cover {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+        .product-body { padding: 0.8rem 0.9rem 1rem; }
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.35rem;
+            gap: 0.5rem;
+        }
+        .type-pill {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 0.16rem 0.56rem;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #fff;
+            background: var(--primary);
+        }
+        .price { font-weight: 800; font-size: 0.84rem; color: var(--text); }
+        .product-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.2rem; }
+        .product-sub { color: var(--muted); font-size: 0.78rem; }
+        .store-section { padding: 5rem 0; }
+        .store-section-alt { background: var(--bg-alt); }
+        #albums-singles { padding-top: calc(68px + 2rem); }
+        #albums-singles {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #f8fbff 0%, #ffffff 55%);
+        }
+        #albums-singles::before,
+        #albums-singles::after {
+            content: '';
+            position: absolute;
+            border-radius: 999px;
+            pointer-events: none;
+            opacity: 0.22;
+            filter: blur(3px);
+        }
+        #albums-singles::before {
+            width: 340px;
+            height: 340px;
+            left: -120px;
+            top: 90px;
+            background: radial-gradient(circle, rgba(37,99,235,0.35), rgba(37,99,235,0));
+            animation: floatBlob 8s ease-in-out infinite;
+        }
+        #albums-singles::after {
+            width: 280px;
+            height: 280px;
+            right: -80px;
+            top: 40px;
+            background: radial-gradient(circle, rgba(59,130,246,0.32), rgba(59,130,246,0));
+            animation: floatBlob 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes floatBlob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-14px); }
+        }
+
+        .empty-message {
+            display: none;
+            padding: 1rem;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .search-shell {
+            transition: box-shadow .3s ease, transform .3s ease, border-color .3s ease;
+        }
+        .search-shell:hover {
+            box-shadow: 0 18px 34px rgba(37,99,235,0.14);
+            transform: translateY(-2px);
+            border-color: rgba(37,99,235,0.34);
+        }
+
+        .product-card,
+        .collection-card {
+            position: relative;
+            isolation: isolate;
+        }
+        .product-card::after,
+        .collection-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(125deg, rgba(37,99,235,0.12), rgba(255,255,255,0));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity .28s ease;
+        }
+        .product-card:hover::after,
+        .collection-card:hover::after {
+            opacity: 1;
+        }
+
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(26px);
+            transition: opacity .65s cubic-bezier(.22,1,.36,1), transform .65s cubic-bezier(.22,1,.36,1);
+            will-change: opacity, transform;
+        }
+        .reveal-item.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-left { transform: translateX(-24px); }
+        .reveal-right { transform: translateX(24px); }
+        .reveal-left.in,
+        .reveal-right.in { transform: translateX(0); }
+
+        @media (prefers-reduced-motion: reduce) {
+            #albums-singles::before,
+            #albums-singles::after {
+                animation: none;
+            }
+            .reveal-item {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        @media (max-width: 980px) {
+            .search-shell { grid-template-columns: 1fr 1fr; }
+            .collections-grid { grid-template-columns: 1fr 1fr; }
+            .products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .store-header-row { flex-direction: column; }
+            .store-search-wrap { max-width: 100%; width: 100%; }
+            .store-header-row .section-intro { text-align: center; max-width: 760px; }
+            #albums-singles { padding-top: calc(68px + 1.5rem); }
+        }
+        @media (max-width: 700px) {
+            .search-shell { grid-template-columns: 1fr; }
+            .collections-grid { grid-template-columns: 1fr; }
+            .products-grid { grid-template-columns: 1fr; }
+            .search-btn { width: 100%; }
+            .store-header-row { gap: 0.9rem; }
+            .section-intro h2 { font-size: clamp(2rem, 8vw, 3rem); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../" class="logo-box">
+                <div class="logo-circle"><span>R</span></div>
+                <div class="logo-text">RANSILU <span class="logo-sub">MUSIC</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../">Home</a></li>
+                <li><a href="../store/">Store</a></li>
+                <li><a href="../artist/">Artists</a></li>
+                <li><a href="../about/">About Us</a></li>
+            </ul>
+            <a href="../radio/" class="live-radio-btn">
+                <span class="live-dot"></span> Live Radio
+            </a>
+        </div>
+    </nav>
+
+    <section class="store-section" id="albums-singles">
+        <div class="container">
+            <div class="store-header-row">
+                <div class="section-intro">
+                    <div class="hero-badge" style="margin-bottom: 1rem;">ALBUMS AND SINGLES</div>
+                    <h2>ALBUMS &amp; SINGLES</h2>
+                    <p>Browse the main catalog of releases in one place, from full albums to individual tracks.</p>
+                </div>
+
+                <div class="store-search-wrap">
+                    <div class="search-shell">
+                        <input id="searchInput" class="search-field" type="text" placeholder="Search albums, singles, or artists...">
+                        <select id="typeFilter" class="search-select">
+                            <option value="all">All Types</option>
+                            <option value="album">Albums</option>
+                            <option value="single">Singles</option>
+                        </select>
+                        <select id="formatFilter" class="search-select">
+                            <option value="all">All Formats</option>
+                            <option value="cd">CD</option>
+                            <option value="vinyl">Vinyl</option>
+                            <option value="cassette">Cassette</option>
+                            <option value="digital">Digital</option>
+                        </select>
+                        <button id="clearFilters" class="search-btn">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="productsGrid" class="products-grid">
+                <article class="product-card" data-type="album" data-format="cd" data-search="Ransilu Classics Nuwan">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=700&auto=format&fit=crop" alt="Ransilu Classics">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Album</span><span class="price">CD</span></div>
+                        <div class="product-title">Ransilu Classics</div>
+                        <div class="product-sub">Nuwan Perera</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="single" data-format="digital" data-search="Hithin Ena Song Kavindya">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1516280440502-65f536c646ae?w=700&auto=format&fit=crop" alt="Hithin Ena Song">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Single</span><span class="price">Digital</span></div>
+                        <div class="product-title">Hithin Ena Song</div>
+                        <div class="product-sub">Kavindya Silva</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="album" data-format="vinyl" data-search="Harsha Band Night Drive">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1539375665275-f9de415ef9ac?w=700&auto=format&fit=crop" alt="Night Drive">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Album</span><span class="price">Vinyl</span></div>
+                        <div class="product-title">Night Drive</div>
+                        <div class="product-sub">Harsha Band</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="single" data-format="cassette" data-search="Dilini Sanda Pahana">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=700&auto=format&fit=crop" alt="Sanda Pahana">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Single</span><span class="price">Cassette</span></div>
+                        <div class="product-title">Sanda Pahana</div>
+                        <div class="product-sub">Dilini Fernando</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="album" data-format="digital" data-search="Samange Saraliya Saman Jayathilaka">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1619983081563-430f63602796?w=700&auto=format&fit=crop" alt="Saraliya">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Album</span><span class="price">Digital</span></div>
+                        <div class="product-title">Saraliya</div>
+                        <div class="product-sub">Saman Jayathilaka</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="single" data-format="cd" data-search="Priya Kumari Film Song">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1533104816-cdd230239634?w=700&auto=format&fit=crop" alt="Film Song">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Single</span><span class="price">CD</span></div>
+                        <div class="product-title">Film Song</div>
+                        <div class="product-sub">Priya Kumari</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="album" data-format="cassette" data-search="Blue Memories Nadeesha">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1470229538611-16ba8c7ffbd7?w=700&auto=format&fit=crop" alt="Blue Memories">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Album</span><span class="price">Cassette</span></div>
+                        <div class="product-title">Blue Memories</div>
+                        <div class="product-sub">Nadeesha K.</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="single" data-format="vinyl" data-search="Street Pulse Prabath">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=700&auto=format&fit=crop" alt="Street Pulse">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Single</span><span class="price">Vinyl</span></div>
+                        <div class="product-title">Street Pulse</div>
+                        <div class="product-sub">Prabath D.</div>
+                    </div>
+                </article>
+            </div>
+            <div id="emptyMessage" class="empty-message">No items found for your current search/filter.</div>
+        </div>
+    </section>
+
+    <section class="store-section" id="collections">
+        <div class="container">
+            <div class="section-intro">
+                <div class="hero-badge" style="margin-bottom: 1rem;">FEATURED COLLECTIONS</div>
+                <h2>FEATURED COLLECTIONS</h2>
+                <p>Hand-picked playlists and release bundles for easy browsing.</p>
+            </div>
+            <div class="collections-grid">
+                <article class="collection-card">
+                    <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1000&auto=format&fit=crop" alt="Classic Sinhala Collection">
+                    <div class="collection-body">
+                        <h3>Classic Sinhala Collection</h3>
+                        <p>Golden-era hits and remastered favorites.</p>
+                    </div>
+                </article>
+                <article class="collection-card">
+                    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1000&auto=format&fit=crop" alt="Studio Essentials">
+                    <div class="collection-body">
+                        <h3>Studio Essentials</h3>
+                        <p>Top-chart albums from Ransilu signature artists.</p>
+                    </div>
+                </article>
+                <article class="collection-card">
+                    <img src="https://images.unsplash.com/photo-1601614725350-ab19b4cfb268?w=1000&auto=format&fit=crop" alt="Weekend Singles Mix">
+                    <div class="collection-body">
+                        <h3>Weekend Singles Mix</h3>
+                        <p>Fresh singles for relaxed evenings and road trips.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <div class="footer-logo">RANSILU MUSIC</div>
+                <p>Sri Lanka's premier record label — bringing the best of Sinhala music to the world.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="ph-fill ph-facebook-logo"></i></a>
+                    <a href="#"><i class="ph-fill ph-youtube-logo"></i></a>
+                    <a href="#"><i class="ph-fill ph-spotify-logo"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a href="../">Music Home</a></li>
+                    <li><a href="../store/">Store</a></li>
+                    <li><a href="../artist/">Artists</a></li>
+                    <li><a href="../about/">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Contact</h5>
+                <ul>
+                    <li><a href="mailto:music@ransilu.com">music@ransilu.com</a></li>
+                    <li><a href="tel:+94112345678">+94 11 234 5678</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="footer-copy" style="margin:1.5rem auto 0; text-align:center; color:#94a3b8; font-size:0.8rem; letter-spacing:0.6px;">© 2026 KeyProduction. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const typeFilter = document.getElementById('typeFilter');
+        const formatFilter = document.getElementById('formatFilter');
+        const clearFilters = document.getElementById('clearFilters');
+        const products = Array.from(document.querySelectorAll('.product-card'));
+        const emptyMessage = document.getElementById('emptyMessage');
+
+        const runFilters = () => {
+            const q = searchInput.value.trim().toLowerCase();
+            const t = typeFilter.value;
+            const f = formatFilter.value;
+
+            let visibleCount = 0;
+            products.forEach(card => {
+                const matchSearch = !q || (card.dataset.search || '').toLowerCase().includes(q);
+                const matchType = t === 'all' || card.dataset.type === t;
+                const matchFormat = f === 'all' || card.dataset.format === f;
+                const show = matchSearch && matchType && matchFormat;
+                card.style.display = show ? '' : 'none';
+                if (show) visibleCount++;
+            });
+
+            emptyMessage.style.display = visibleCount ? 'none' : 'block';
+        };
+
+        searchInput.addEventListener('input', runFilters);
+        typeFilter.addEventListener('change', runFilters);
+        formatFilter.addEventListener('change', runFilters);
+        clearFilters.addEventListener('click', () => {
+            searchInput.value = '';
+            typeFilter.value = 'all';
+            formatFilter.value = 'all';
+            runFilters();
+        });
+
+        runFilters();
+
+        const revealTargets = [
+            document.querySelector('.store-header-row .section-intro'),
+            document.querySelector('.store-search-wrap'),
+            document.querySelector('#collections .section-intro'),
+            ...document.querySelectorAll('.product-card'),
+            ...document.querySelectorAll('.collection-card')
+        ].filter(Boolean);
+
+        revealTargets.forEach((el, index) => {
+            el.classList.add('reveal-item');
+            if (el.classList.contains('product-card')) {
+                el.style.transitionDelay = `${(index % 8) * 0.05}s`;
+            }
+            if (el.classList.contains('collection-card')) {
+                el.style.transitionDelay = `${(index % 3) * 0.08}s`;
+            }
+        });
+
+        document.querySelector('.store-header-row .section-intro')?.classList.add('reveal-left');
+        document.querySelector('.store-search-wrap')?.classList.add('reveal-right');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('in');
+                revealObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.14, rootMargin: '0px 0px -40px 0px' });
+
+        revealTargets.forEach((el) => revealObserver.observe(el));
+    </script>
+</body>
+</html>

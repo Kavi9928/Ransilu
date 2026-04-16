@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ransilu Radio programs page with daily and weekly show schedule.">
+    <title>Ransilu Radio Programs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .programs-hero {
+            padding-top: 110px;
+            padding-bottom: 44px;
+            background: linear-gradient(135deg, #eef2ff 0%, #dbeafe 60%, #eff6ff 100%);
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .programs-hero .container,
+        .programs-wrap .container {
+            max-width: 1160px;
+            margin: 0 auto;
+        }
+
+        .programs-hero::before,
+        .programs-hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            pointer-events: none;
+            opacity: 0.35;
+            filter: blur(4px);
+        }
+
+        .programs-hero::before {
+            width: 340px;
+            height: 340px;
+            right: -90px;
+            top: -110px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.34) 0%, rgba(37, 99, 235, 0) 70%);
+        }
+
+        .programs-hero::after {
+            width: 260px;
+            height: 260px;
+            left: -70px;
+            bottom: -120px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, rgba(59, 130, 246, 0) 72%);
+        }
+
+        .programs-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 4.6rem);
+            letter-spacing: 2px;
+            line-height: 0.95;
+            margin-bottom: 0.9rem;
+            text-align: center;
+        }
+
+        .programs-hero p {
+            color: var(--muted);
+            max-width: 760px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .hero-metrics {
+            margin-top: 1.4rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            max-width: 860px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-metric {
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(4px);
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+
+        .hero-metric strong {
+            display: block;
+            color: var(--text);
+            font-size: 1rem;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .hero-metric span {
+            color: var(--muted);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pill-row {
+            margin-top: 1.1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--muted);
+        }
+
+        .programs-wrap {
+            padding: 56px 0 70px;
+            background:
+                linear-gradient(180deg, rgba(248, 251, 255, 0.94), rgba(240, 247, 255, 0.96)),
+                url('https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;
+        }
+
+        .program-day {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.06);
+            position: relative;
+            overflow: hidden;
+            margin-left: auto;
+            margin-right: auto;
+            width: min(100%, 1080px);
+        }
+
+        .program-day::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 4px;
+            background: linear-gradient(180deg, #2563eb, #38bdf8);
+        }
+
+        .day-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .day-head h2 {
+            font-size: 1.2rem;
+            letter-spacing: 0.4px;
+        }
+
+        .day-head span {
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .program-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            background: #fff;
+            transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .program-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            z-index: -1;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.09), rgba(255, 255, 255, 0));
+            opacity: 0;
+            transition: opacity .28s ease;
+        }
+
+        .program-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.08);
+            border-color: rgba(37, 99, 235, 0.4);
+        }
+
+        .program-card:hover::after {
+            opacity: 1;
+        }
+
+        .program-time {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--primary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .program-card h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .program-card p {
+            font-size: 0.82rem;
+            color: var(--muted);
+        }
+
+        .program-card.live {
+            border-color: #ef4444;
+            background: linear-gradient(180deg, #fff, #fff5f5);
+        }
+
+        .program-card.live .program-time {
+            color: #ef4444;
+        }
+
+        .quick-back {
+            margin-top: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(26px) scale(0.99);
+            transition: opacity 0.65s cubic-bezier(.22,1,.36,1), transform 0.65s cubic-bezier(.22,1,.36,1);
+            will-change: opacity, transform;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .fade-left {
+            transform: translateX(-24px);
+        }
+
+        .fade-right {
+            transform: translateX(24px);
+        }
+
+        .float-soft {
+            animation: softFloat 7s ease-in-out infinite;
+        }
+
+        @keyframes softFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        @media (max-width: 900px) {
+            .program-grid { grid-template-columns: 1fr; }
+            .day-head { flex-direction: column; align-items: flex-start; }
+            .hero-metrics { grid-template-columns: 1fr; }
+            .fade-left,
+            .fade-right { transform: translateY(20px); }
+            .programs-hero {
+                padding-top: 94px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal,
+            .float-soft,
+            .program-card,
+            .program-card::after {
+                transition: none;
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../" class="logo-box">
+                <div class="logo-circle"><span>R</span></div>
+                <div class="logo-text">RANSILU <span class="logo-sub">RADIO</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../">Home</a></li>
+                <li><a href="./">Programs</a></li>
+                <li><a href="../about/">About</a></li>
+            </ul>
+            <div class="live-indicator">
+                <span class="live-dot"></span>
+                <span class="live-label">ON AIR</span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="programs-hero">
+        <div class="container">
+            <h1 class="reveal fade-left">RANSILU RADIO PROGRAMS</h1>
+            <p class="reveal fade-left" style="transition-delay: .08s;">Explore our weekly line-up. These are sample dummy programs designed to show how your final schedule page will look with featured shows, hosts, and themed blocks.</p>
+            <div class="hero-metrics">
+                <div class="hero-metric reveal" style="transition-delay: .14s;"><strong>14+</strong><span>Shows Weekly</span></div>
+                <div class="hero-metric reveal" style="transition-delay: .2s;"><strong>24/7</strong><span>Live Rotation</span></div>
+                <div class="hero-metric reveal" style="transition-delay: .26s;"><strong>2</strong><span>Main Blocks</span></div>
+            </div>
+            <div class="pill-row reveal fade-right" style="transition-delay: .3s;">
+                <div class="pill float-soft"><i class="ph ph-clock"></i> 24/7 Rotation</div>
+                <div class="pill float-soft" style="animation-delay: .5s;"><i class="ph ph-microphone-stage"></i> Live Host Segments</div>
+                <div class="pill float-soft" style="animation-delay: 1s;"><i class="ph ph-music-notes"></i> Sinhala + Global Hits</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="programs-wrap">
+        <div class="container">
+            <article class="program-day reveal fade-left">
+                <div class="day-head">
+                    <h2>Weekday Lineup</h2>
+                    <span>Monday to Friday</span>
+                </div>
+                <div class="program-grid">
+                    <div class="program-card live reveal">
+                        <div class="program-time">06:00 AM - Live</div>
+                        <h3>Morning Sunrise Mix</h3>
+                        <p>Uplifting tracks, short headlines, and listener shout-outs to start the day.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">09:00 AM</div>
+                        <h3>Workday Chill</h3>
+                        <p>Balanced pop and soft beats for office hours and study sessions.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">12:00 PM</div>
+                        <h3>Noon News Pulse</h3>
+                        <p>Top headlines plus world news summary with quick traffic updates.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">03:00 PM</div>
+                        <h3>Retro Rewind</h3>
+                        <p>Classic Sinhala favorites and throwback stories from radio history.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">06:00 PM</div>
+                        <h3>Drive Time Energy</h3>
+                        <p>High-energy mix for commuters with trending tracks and requests.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">09:00 PM</div>
+                        <h3>Night Lounge</h3>
+                        <p>Late-night mellow vibes, acoustic covers, and listener dedications.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="program-day reveal fade-right">
+                <div class="day-head">
+                    <h2>Weekend Specials</h2>
+                    <span>Saturday and Sunday</span>
+                </div>
+                <div class="program-grid">
+                    <div class="program-card reveal">
+                        <div class="program-time">08:00 AM</div>
+                        <h3>Weekend Breakfast Club</h3>
+                        <p>Light talk, audience games, and classic weekend anthems.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">11:00 AM</div>
+                        <h3>Artist Spotlight</h3>
+                        <p>One featured singer per episode with songs, trivia, and interviews.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">02:00 PM</div>
+                        <h3>DJ Guest Mix</h3>
+                        <p>Guest DJ sets with dance, house, and crossover regional remixes.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">05:00 PM</div>
+                        <h3>Story and Song</h3>
+                        <p>Teledrama theme songs, memory lane stories, and fan selections.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">08:00 PM</div>
+                        <h3>BBC News Window</h3>
+                        <p>Dedicated hourly world news block from BBC World Service.</p>
+                    </div>
+                    <div class="program-card reveal">
+                        <div class="program-time">10:00 PM</div>
+                        <h3>Midnight Relaxation</h3>
+                        <p>Ambient playlists for calm nights and uninterrupted listening.</p>
+                    </div>
+                </div>
+            </article>
+
+            <div class="quick-back reveal" style="transition-delay: .1s;">
+                <a href="../" class="section-link-btn">Back To Live Player</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <div class="footer-logo">RANSILU RADIO</div>
+                <p>Sri Lanka's favorite web radio — music that connects us all.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a href="../">Live Radio</a></li>
+                    <li><a href="./">Programs</a></li>
+                    <li><a href="../../music/">Ransilu Music</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Contact</h5>
+                <ul>
+                    <li><a href="mailto:radio@ransilu.com">radio@ransilu.com</a></li>
+                    <li><a href="tel:+94112345678">+94 11 234 5678</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="footer-copy" style="margin:1.5rem auto 0; text-align:center; color:#94a3b8; font-size:0.8rem; letter-spacing:0.6px;">© 2026 KeyProduction. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const revealItems = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.14, rootMargin: '0px 0px -50px 0px' });
+
+        revealItems.forEach((item, index) => {
+            if (!item.style.transitionDelay && item.classList.contains('program-card')) {
+                item.style.transitionDelay = `${(index % 6) * 0.06}s`;
+            }
+            revealObserver.observe(item);
+        });
+    </script>
+</body>
+</html>
