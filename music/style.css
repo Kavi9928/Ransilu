@@ -406,6 +406,7 @@ button { cursor:pointer; font-family:var(--font); border:none; background:none; 
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  position: relative;
   transition: transform .24s ease, box-shadow .24s ease;
 }
 .home-artist-card:hover {
@@ -413,7 +414,8 @@ button { cursor:pointer; font-family:var(--font); border:none; background:none; 
   box-shadow: 0 16px 30px rgba(2, 6, 23, 0.35);
 }
 .home-artist-image {
-  height: 248px;
+  height: 100%;
+  flex: 1;
   overflow: hidden;
   background: #0f172a;
 }
@@ -426,7 +428,12 @@ button { cursor:pointer; font-family:var(--font); border:none; background:none; 
 .home-artist-card:hover .home-artist-image img { transform: scale(1.05); }
 
 .home-artist-body {
-  flex: 1;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #06162f;
+  border-top: 1px solid rgba(255,255,255,0.18);
   padding: 0.65rem 0.9rem;
   display: flex;
   flex-direction: column;
@@ -434,6 +441,14 @@ button { cursor:pointer; font-family:var(--font); border:none; background:none; 
   align-items: center;
   gap: 0.45rem;
   text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .28s ease, transform .28s ease;
+}
+.home-artist-card:focus-within .home-artist-body,
+.home-artist-card:hover .home-artist-body {
+  opacity: 1;
+  transform: translateY(0);
 }
 .home-artist-body h3 {
   font-family: var(--font-display);
