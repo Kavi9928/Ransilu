@@ -164,12 +164,120 @@
         .content-section.active {
             display: block;
         }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1e293b;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
                 height: auto;
                 position: relative;
-                margin-bottom: 20px;
             }
             .main-content {
                 margin-left: 0;
@@ -257,7 +365,7 @@
             <div class="content-section" id="store">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                     <h2>Store Products</h2>
-                    <button id="addProductBtn" style="padding: 10px 20px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px;">+ Add Product</button>
+                    <button id="addProductBtn" class="btn btn-primary">+ Add Product</button>
                 </div>
                 <div id="storeLoading" style="text-align: center; padding: 40px;">Loading products...</div>
                 <div id="storeTable" style="display: none; background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden;">
@@ -303,8 +411,65 @@
         </main>
     </div>
 
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Product</h2>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+
+            <form id="productForm">
+                <div class="form-group">
+                    <label for="productTitle">Title *</label>
+                    <input type="text" id="productTitle" required placeholder="Product title">
+                </div>
+
+                <div class="form-group">
+                    <label for="productArtist">Artist *</label>
+                    <input type="text" id="productArtist" required placeholder="Artist name">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productType">Type *</label>
+                        <select id="productType" required>
+                            <option value="">Select type</option>
+                            <option value="album">Album</option>
+                            <option value="single">Single</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="productFormat">Format *</label>
+                        <select id="productFormat" required>
+                            <option value="">Select format</option>
+                            <option value="cd">CD</option>
+                            <option value="vinyl">Vinyl</option>
+                            <option value="cassette">Cassette</option>
+                            <option value="digital">Digital</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="productImage">Image URL *</label>
+                    <input type="url" id="productImage" required placeholder="https://example.com/image.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label for="productSearch">Search Keywords</label>
+                    <input type="text" id="productSearch" placeholder="Keywords for search">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Check authentication
         const token = localStorage.getItem('admin_token');
         const user = localStorage.getItem('admin_user');
 
@@ -331,7 +496,6 @@
         const pageTitle = document.getElementById('pageTitle');
 
         function switchSection(sectionId) {
-            // Update active nav link
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.dataset.section === sectionId) {
@@ -339,17 +503,18 @@
                 }
             });
 
-            // Update active content section
             contentSections.forEach(section => {
                 section.classList.remove('active');
             });
             document.getElementById(sectionId).classList.add('active');
 
-            // Update page title
             pageTitle.textContent = titleMap[sectionId];
+
+            if (sectionId === 'store') {
+                loadStoreProducts();
+            }
         }
 
-        // Add click handlers to nav links
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 const section = link.dataset.section;
@@ -357,7 +522,6 @@
             });
         });
 
-        // Add click handlers to cards
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', () => {
                 const section = card.dataset.section;
@@ -365,7 +529,6 @@
             });
         });
 
-        // Logout
         document.getElementById('logoutBtn').addEventListener('click', () => {
             localStorage.removeItem('admin_token');
             localStorage.removeItem('admin_user');
@@ -374,9 +537,14 @@
 
         // Store Products Management
         let storeProducts = [];
+        let editingIndex = null;
 
-        // Load products when Store section is clicked
-        document.querySelector('[data-section="store"]').addEventListener('click', loadStoreProducts);
+        const productModal = document.getElementById('productModal');
+        const productForm = document.getElementById('productForm');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const modalTitle = document.getElementById('modalTitle');
 
         async function loadStoreProducts() {
             const loading = document.getElementById('storeLoading');
@@ -392,12 +560,12 @@
                 storeProducts = data.products || [];
 
                 if (storeProducts.length === 0) {
-                    loading.innerHTML = '<p style="color: #64748b;">No products yet. Click "Add Product" to create one.</p>';
+                    loading.innerHTML = '<p style="color: #64748b;">No products yet.</p>';
                     return;
                 }
 
                 tbody.innerHTML = storeProducts.map((product, idx) => `
-                    <tr style="border-bottom: 1px solid #e2e8f0; hover: background: #f8fafc;">
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
                         <td style="padding: 16px;"><img src="${product.image}" alt="" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/40'"></td>
                         <td style="padding: 16px; font-weight: 600;">${product.title}</td>
                         <td style="padding: 16px;">${product.artist}</td>
@@ -413,8 +581,35 @@
                 loading.style.display = 'none';
                 table.style.display = 'block';
             } catch (err) {
-                loading.innerHTML = '<p style="color: #dc2626;">Failed to load products. ' + err.message + '</p>';
+                loading.innerHTML = '<p style="color: #dc2626;">Failed to load products.</p>';
             }
+        }
+
+        function openModal(index = null) {
+            editingIndex = index;
+            productForm.reset();
+            if (index !== null) {
+                const product = storeProducts[index];
+                modalTitle.textContent = 'Edit Product';
+                document.getElementById('productTitle').value = product.title;
+                document.getElementById('productArtist').value = product.artist;
+                document.getElementById('productType').value = product.type;
+                document.getElementById('productFormat').value = product.format;
+                document.getElementById('productImage').value = product.image;
+                document.getElementById('productSearch').value = product.search;
+            } else {
+                modalTitle.textContent = 'Add Product';
+            }
+            productModal.classList.add('active');
+        }
+
+        function closeModal() {
+            productModal.classList.remove('active');
+            editingIndex = null;
+        }
+
+        function editProduct(idx) {
+            openModal(idx);
         }
 
         function deleteProduct(idx) {
@@ -423,9 +618,29 @@
             saveProducts();
         }
 
-        function editProduct(idx) {
-            alert('Edit feature coming soon. For now, you can delete and re-add products, or edit store.json directly.');
-        }
+        productForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const product = {
+                title: document.getElementById('productTitle').value,
+                artist: document.getElementById('productArtist').value,
+                type: document.getElementById('productType').value,
+                format: document.getElementById('productFormat').value,
+                image: document.getElementById('productImage').value,
+                search: document.getElementById('productSearch').value
+            };
+
+            if (editingIndex !== null) {
+                const id = storeProducts[editingIndex].id;
+                storeProducts[editingIndex] = { id, ...product };
+            } else {
+                const id = product.title.toLowerCase().replace(/\s+/g, '-');
+                storeProducts.push({ id, ...product });
+            }
+
+            closeModal();
+            await saveProducts();
+        });
 
         async function saveProducts() {
             try {
@@ -439,18 +654,21 @@
                 });
 
                 if (response.ok) {
-                    alert('Products saved successfully!');
                     loadStoreProducts();
                 } else {
                     alert('Failed to save products');
                 }
             } catch (err) {
-                alert('Error saving: ' + err.message);
+                alert('Error: ' + err.message);
             }
         }
 
-        document.getElementById('addProductBtn').addEventListener('click', () => {
-            alert('Add product feature coming soon. You can add products by editing the store.json file directly.');
+        addProductBtn.addEventListener('click', () => openModal());
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        productModal.addEventListener('click', (e) => {
+            if (e.target === productModal) closeModal();
         });
     </script>
 </body>
