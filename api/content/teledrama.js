@@ -6,20 +6,26 @@ const BLOB_KEY = 'teledrama.json';
 
 async function getBlobData() {
     try {
-        const blob = await get(BLOB_KEY);
+        const options = process.env.BLOB_READ_WRITE_TOKEN ? { token: process.env.BLOB_READ_WRITE_TOKEN } : {};
+        const blob = await get(BLOB_KEY, options);
         if (blob) return await blob.text();
     } catch (e) {
-        // Blob not available, will fall back to filesystem
+        console.log('Blob read fallback:', e.message);
     }
     return null;
 }
 
 async function setBlobData(data) {
     try {
-        await put(BLOB_KEY, data, { access: 'public' });
+        if (!process.env.BLOB_READ_WRITE_TOKEN) {
+            console.error('BLOB_READ_WRITE_TOKEN not set');
+            return false;
+        }
+        const options = { token: process.env.BLOB_READ_WRITE_TOKEN, access: 'public' };
+        await put(BLOB_KEY, data, options);
         return true;
     } catch (e) {
-        console.error('Blob write failed:', e.message);
+        console.error('Blob write error:', e.message);
         return false;
     }
 }

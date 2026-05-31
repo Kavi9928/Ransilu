@@ -6,23 +6,26 @@ const BLOB_KEY = 'store.json';
 
 async function getBlobData() {
     try {
-        const blob = await get(BLOB_KEY);
+        const options = process.env.BLOB_READ_WRITE_TOKEN ? { token: process.env.BLOB_READ_WRITE_TOKEN } : {};
+        const blob = await get(BLOB_KEY, options);
         if (blob) return await blob.text();
     } catch (e) {
-        // Blob not available, will fall back to filesystem
+        console.log('Blob read fallback:', e.message);
     }
     return null;
 }
 
 async function setBlobData(data) {
     try {
-        console.log('Attempting Blob write, token available:', !!process.env.BLOB_READ_WRITE_TOKEN);
-        console.log('Blob store ID:', process.env.BLOB_STORE_ID);
-        await put(BLOB_KEY, data, { access: 'public' });
-        console.log('Blob write successful');
+        if (!process.env.BLOB_READ_WRITE_TOKEN) {
+            console.error('BLOB_READ_WRITE_TOKEN not set');
+            return false;
+        }
+        const options = { token: process.env.BLOB_READ_WRITE_TOKEN, access: 'public' };
+        await put(BLOB_KEY, data, options);
         return true;
     } catch (e) {
-        console.error('Blob write failed:', e.message, e.code);
+        console.error('Blob write error:', e.message);
         return false;
     }
 }
