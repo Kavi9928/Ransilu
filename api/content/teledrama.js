@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export default async function handler(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
     const token = req.headers.authorization?.replace('Bearer ', '');
 
     if (!token) {
@@ -17,13 +19,30 @@ export default async function handler(req, res) {
         return res.status(401).json({ message: 'Invalid token' });
     }
 
-    const teledramaDataPath = path.join(process.cwd(), 'public', 'data', 'teledrama.json');
+    const paths = [
+        path.join(process.cwd(), 'public', 'data', 'teledrama.json'),
+        path.join(process.cwd(), 'data', 'teledrama.json'),
+    ];
 
     if (req.method === 'GET') {
         try {
-            const data = await fs.readFile(teledramaDataPath, 'utf-8');
+            let data;
+            for (const p of paths) {
+                try {
+                    data = await fs.readFile(p, 'utf-8');
+                    break;
+                } catch (e) {
+                    continue;
+                }
+            }
+
+            if (!data) {
+                return res.status(404).json({ message: 'Teledrama data not found' });
+            }
+
             return res.status(200).json(JSON.parse(data));
         } catch (err) {
+            console.error('Error reading teledrama data:', err);
             return res.status(500).json({ message: 'Failed to read teledrama data' });
         }
     }
@@ -41,7 +60,7 @@ export default async function handler(req, res) {
                 episodes: episodes || []
             };
 
-            await fs.writeFile(teledramaDataPath, JSON.stringify(teledramaData, null, 2));
+            await fs.writeFile(paths[0], JSON.stringify(teledramaData, null, 2));
 
             return res.status(200).json({
                 message: 'Teledrama data updated successfully',
@@ -49,7 +68,7 @@ export default async function handler(req, res) {
             });
         } catch (err) {
             console.error('Error saving teledrama data:', err);
-            return res.status(500).json({ message: 'Failed to save teledrama data' });
+            return res.status(500).json({ message: 'Failed to save teledrama data', error: err.message });
         }
     }
 

@@ -1,0 +1,96 @@
+{
+  "products": [
+    {
+      "id": "ransilu-classics",
+      "type": "album",
+      "format": "cd",
+      "title": "Ransilu Classics",
+      "artist": "Nuwan Perera",
+      "image": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=700&auto=format&fit=crop",
+      "search": "Ransilu Classics Nuwan"
+    },
+    {
+      "id": "hithin-ena-song",
+      "type": "single",
+      "format": "digital",
+      "title": "Hithin Ena Song",
+      "artist": "Kavindya Silva",
+      "image": "https://images.unsplash.com/photo-1516280440502-65f536c646ae?w=700&auto=format&fit=crop",
+      "search": "Hithin Ena Song Kavindya"
+    },
+    {
+      "id": "night-drive",
+      "type": "album",
+      "format": "vinyl",
+      "title": "Night Drive",
+      "artist": "Harsha Band",
+      "image": "https://images.unsplash.com/photo-1539375665275-f9de415ef9ac?w=700&auto=format&fit=crop",
+      "search": "Harsha Band Night Drive"
+    },
+    {
+      "id": "sanda-pahana",
+      "type": "single",
+      "format": "cassette",
+      "title": "Sanda Pahana",
+      "artist": "Dilini Fernando",
+      "image": "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=700&auto=format&fit=crop",
+      "search": "Dilini Sanda Pahana"
+    },
+    {
+      "id": "saraliya",
+      "type": "album",
+      "format": "digital",
+      "title": "Saraliya",
+      "artist": "Saman Jayathilaka",
+      "image": "https://images.unsplash.com/photo-1619983081563-430f63602796?w=700&auto=format&fit=crop",
+      "search": "Samange Saraliya Saman Jayathilaka"
+    },
+    {
+      "id": "film-song",
+      "type": "single",
+      "format": "cd",
+      "title": "Film Song",
+      "artist": "Priya Kumari",
+      "image": "https://images.unsplash.com/photo-1533104816-cdd230239634?w=700&auto=format&fit=crop",
+      "search": "Priya Kumari Film Song"
+    },
+    {
+      "id": "blue-memories",
+      "type": "album",
+      "format": "cassette",
+      "title": "Blue Memories",
+      "artist": "Nadeesha K.",
+      "image": "https://images.unsplash.com/photo-1470229538611-16ba8c7ffbd7?w=700&auto=format&fit=crop",
+      "search": "Blue Memories Nadeesha"
+    },
+    {
+      "id": "street-pulse",
+      "type": "single",
+      "format": "vinyl",
+      "title": "Street Pulse",
+      "artist": "Prabath D.",
+      "image": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=700&auto=format&fit=crop",
+      "search": "Street Pulse Prabath"
+    }
+  ],
+  "collections": [
+    {
+      "id": "classic-sinhala",
+      "title": "Classic Sinhala Collection",
+      "description": "Golden-era hits and remastered favorites.",
+      "image": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "studio-essentials",
+      "title": "Studio Essentials",
+      "description": "Top-chart albums from Ransilu signature artists.",
+      "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1000&auto=format&fit=crop"
+    },
+    {
+      "id": "weekend-singles",
+      "title": "Weekend Singles Mix",
+      "description": "Fresh singles for relaxed evenings and road trips.",
+      "image": "https://images.unsplash.com/photo-1601614725350-ab19b4cfb268?w=1000&auto=format&fit=crop"
+    }
+  ]
+}

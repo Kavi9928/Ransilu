@@ -98,20 +98,25 @@
                 <div class="home-artists-carousel">
                     <button class="home-artists-nav" data-dir="prev" data-track="home-artist-track" aria-label="Previous artist"><i class="ph ph-caret-left"></i></button>
                     <div class="home-artists-track" id="home-artist-track">
-                        <article class="home-artist-card" data-index="0" tabindex="0" role="button" aria-label="Open Jackson A. profile">
+                        <article class="home-artist-card" aria-label="Jackson A. profile">
                             <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=700&auto=format&fit=crop" alt="Jackson A." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Jackson A.</h3></div>
                         </article>
-                        <article class="home-artist-card" data-index="1" tabindex="0" role="button" aria-label="Open Yashoda W. profile">
+                        <article class="home-artist-card" aria-label="Yashoda W. profile">
                             <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=700&auto=format&fit=crop" alt="Yashoda W." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Yashoda W.</h3></div>
                         </article>
-                        <article class="home-artist-card" data-index="2" tabindex="0" role="button" aria-label="Open Damith R. profile">
+                        <article class="home-artist-card" aria-label="Damith R. profile">
                             <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=700&auto=format&fit=crop" alt="Damith R." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Damith R.</h3></div>
                         </article>
-                        <article class="home-artist-card" data-index="3" tabindex="0" role="button" aria-label="Open Nelum P. profile">
+                        <article class="home-artist-card" aria-label="Nelum P. profile">
                             <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=700&auto=format&fit=crop" alt="Nelum P." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Nelum P.</h3></div>
                         </article>
-                        <article class="home-artist-card" data-index="4" tabindex="0" role="button" aria-label="Open Nadeesha K. profile">
+                        <article class="home-artist-card" aria-label="Nadeesha K. profile">
                             <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=700&auto=format&fit=crop" alt="Nadeesha K." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Nadeesha K.</h3></div>
                         </article>
                     </div>
                     <button class="home-artists-nav" data-dir="next" data-track="home-artist-track" aria-label="Next artist"><i class="ph ph-caret-right"></i></button>
@@ -263,27 +268,6 @@
         </div>
     </section>
 
-    <div class="home-spotlight" id="home-spotlight" aria-hidden="true">
-        <div class="home-spotlight-backdrop" data-close="true"></div>
-        <div class="home-spotlight-shell" role="dialog" aria-modal="true" aria-label="Profile spotlight">
-            <button class="home-spotlight-close" id="home-spotlight-close" aria-label="Close"><i class="ph ph-x"></i></button>
-            <button class="home-spotlight-side-nav home-spotlight-prev" id="home-spotlight-prev" aria-label="Previous"><i class="ph ph-caret-left"></i></button>
-            <button class="home-spotlight-side-nav home-spotlight-next" id="home-spotlight-next" aria-label="Next"><i class="ph ph-caret-right"></i></button>
-
-            <div class="home-spotlight-bg" id="home-spotlight-bg"></div>
-
-            <div class="home-spotlight-main">
-                <div class="home-spotlight-copy">
-                    <div class="home-spotlight-kicker">Performer Spotlight</div>
-                    <h2 id="home-spotlight-name"></h2>
-                    <div class="home-spotlight-role" id="home-spotlight-role"></div>
-                    <p id="home-spotlight-summary"></p>
-                </div>
-                <div class="home-spotlight-thumbs" id="home-spotlight-thumbs"></div>
-            </div>
-        </div>
-    </div>
-
     <!-- ══ FOOTER ══ -->
     <footer class="footer">
         <div class="container footer-grid">
@@ -324,7 +308,7 @@
                 if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
             });
         }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.album-card, .product-card, .format-card, .artist-card, .home-artist-card, .home-artists-head, .section-header, .hero-main > *, .hero-side, .store-note').forEach(el => {
+        document.querySelectorAll('.album-card, .product-card, .format-card, .artist-card, .home-artist-card, .home-artists-heading, .section-header, .hero-main > *, .hero-side, .store-note').forEach(el => {
             el.classList.add('anim-enter');
             observer.observe(el);
         });
@@ -334,83 +318,6 @@
         artistSearchForm?.addEventListener('submit', e => {
             e.preventDefault();
         });
-
-        const homeArtists = [
-            {
-                name: 'Jackson A.',
-                role: 'Supporting Actor',
-                image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=700&auto=format&fit=crop',
-                summary: 'A standout performer in Ransilu productions, known for expressive screen presence and memorable character work.'
-            },
-            {
-                name: 'Yashoda W.',
-                role: 'Supporting Actress',
-                image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=700&auto=format&fit=crop',
-                summary: 'Known for nuanced roles and elegant performances across drama and music storytelling projects.'
-            },
-            {
-                name: 'Damith R.',
-                role: 'Character Actor',
-                image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=700&auto=format&fit=crop',
-                summary: 'A versatile character actor bringing depth and personality to high-impact Ransilu productions.'
-            },
-            {
-                name: 'Nelum P.',
-                role: 'Guest Star',
-                image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=700&auto=format&fit=crop',
-                summary: 'Celebrated for magnetic guest appearances and emotionally resonant screen presence.'
-            },
-            {
-                name: 'Nadeesha K.',
-                role: 'Lead Actress',
-                image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=700&auto=format&fit=crop',
-                summary: 'A contemporary lead performer balancing charisma, range, and strong cinematic expression.'
-            }
-        ];
-
-        const homeSpotlightState = { index: 0 };
-        const homeSpotlight = document.getElementById('home-spotlight');
-        const homeSpotlightBg = document.getElementById('home-spotlight-bg');
-        const homeSpotlightName = document.getElementById('home-spotlight-name');
-        const homeSpotlightRole = document.getElementById('home-spotlight-role');
-        const homeSpotlightSummary = document.getElementById('home-spotlight-summary');
-        const homeSpotlightThumbs = document.getElementById('home-spotlight-thumbs');
-
-        const updateHomeSpotlight = () => {
-            const item = homeArtists[homeSpotlightState.index];
-            if (!item) return;
-            homeSpotlightBg.style.backgroundImage = `url('${item.image}')`;
-            homeSpotlightName.textContent = item.name.toUpperCase();
-            homeSpotlightRole.textContent = item.role;
-            homeSpotlightSummary.textContent = item.summary;
-
-            homeSpotlightThumbs.innerHTML = homeArtists.map((artist, idx) => `
-                <button class="home-spotlight-thumb ${idx === homeSpotlightState.index ? 'active' : ''}" data-thumb-index="${idx}" aria-label="Show ${artist.name}">
-                    <img src="${artist.image}" alt="${artist.name}">
-                </button>
-            `).join('');
-
-            homeSpotlightThumbs.querySelectorAll('.home-spotlight-thumb').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    homeSpotlightState.index = parseInt(btn.dataset.thumbIndex, 10);
-                    updateHomeSpotlight();
-                });
-            });
-        };
-
-        const openHomeSpotlight = (index) => {
-            homeSpotlightState.index = index;
-            updateHomeSpotlight();
-            homeSpotlight.classList.add('open');
-            homeSpotlight.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-        };
-
-        const closeHomeSpotlight = () => {
-            homeSpotlight.classList.remove('open');
-            homeSpotlight.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-        };
 
         document.querySelectorAll('.home-artists-nav').forEach(button => {
             button.addEventListener('click', () => {
@@ -423,36 +330,6 @@
                 const dir = button.dataset.dir === 'next' ? 1 : -1;
                 track.scrollBy({ left: dir * jump * 2, behavior: 'smooth' });
             });
-        });
-
-        document.querySelectorAll('.home-artist-card').forEach(card => {
-            const openFromCard = () => {
-                const idx = parseInt(card.dataset.index, 10);
-                if (Number.isNaN(idx)) return;
-                openHomeSpotlight(idx);
-            };
-
-            card.addEventListener('mouseenter', openFromCard);
-            card.addEventListener('click', openFromCard);
-            card.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    openFromCard();
-                }
-            });
-        });
-
-        document.getElementById('home-spotlight-close')?.addEventListener('click', closeHomeSpotlight);
-        document.querySelectorAll('#home-spotlight [data-close="true"]').forEach(el => el.addEventListener('click', closeHomeSpotlight));
-
-        document.getElementById('home-spotlight-prev')?.addEventListener('click', () => {
-            homeSpotlightState.index = (homeSpotlightState.index - 1 + homeArtists.length) % homeArtists.length;
-            updateHomeSpotlight();
-        });
-
-        document.getElementById('home-spotlight-next')?.addEventListener('click', () => {
-            homeSpotlightState.index = (homeSpotlightState.index + 1) % homeArtists.length;
-            updateHomeSpotlight();
         });
 
         const homeArtistsTrack = document.getElementById('home-artist-track');

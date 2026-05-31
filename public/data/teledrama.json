@@ -1,0 +1,26 @@
+{
+  "series": [
+    {
+      "id": "series-001",
+      "title": "Night Whispers",
+      "description": "A gripping drama series",
+      "image": "https://images.unsplash.com/photo-1533104816-cdd230239634?w=700&auto=format&fit=crop",
+      "genre": "Drama",
+      "status": "ongoing"
+    }
+  ],
+  "episodes": [
+    {
+      "id": "episode-001",
+      "seriesId": "series-001",
+      "title": "Episode 1",
+      "episodeNumber": 1,
+      "seasonNumber": 1,
+      "airDate": "2026-05-31",
+      "videoUrl": "",
+      "duration": "45",
+      "description": "",
+      "thumbnail": ""
+    }
+  ]
+}

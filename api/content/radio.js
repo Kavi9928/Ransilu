@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export default async function handler(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
     const token = req.headers.authorization?.replace('Bearer ', '');
 
     if (!token) {
@@ -17,13 +19,30 @@ export default async function handler(req, res) {
         return res.status(401).json({ message: 'Invalid token' });
     }
 
-    const radioDataPath = path.join(process.cwd(), 'public', 'data', 'radio.json');
+    const paths = [
+        path.join(process.cwd(), 'public', 'data', 'radio.json'),
+        path.join(process.cwd(), 'data', 'radio.json'),
+    ];
 
     if (req.method === 'GET') {
         try {
-            const data = await fs.readFile(radioDataPath, 'utf-8');
+            let data;
+            for (const p of paths) {
+                try {
+                    data = await fs.readFile(p, 'utf-8');
+                    break;
+                } catch (e) {
+                    continue;
+                }
+            }
+
+            if (!data) {
+                return res.status(404).json({ message: 'Radio data not found' });
+            }
+
             return res.status(200).json(JSON.parse(data));
         } catch (err) {
+            console.error('Error reading radio data:', err);
             return res.status(500).json({ message: 'Failed to read radio data' });
         }
     }
@@ -41,7 +60,7 @@ export default async function handler(req, res) {
                 episodes: episodes || []
             };
 
-            await fs.writeFile(radioDataPath, JSON.stringify(radioData, null, 2));
+            await fs.writeFile(paths[0], JSON.stringify(radioData, null, 2));
 
             return res.status(200).json({
                 message: 'Radio data updated successfully',
@@ -49,7 +68,7 @@ export default async function handler(req, res) {
             });
         } catch (err) {
             console.error('Error saving radio data:', err);
-            return res.status(500).json({ message: 'Failed to save radio data' });
+            return res.status(500).json({ message: 'Failed to save radio data', error: err.message });
         }
     }
 

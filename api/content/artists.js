@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export default async function handler(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
     const token = req.headers.authorization?.replace('Bearer ', '');
 
     if (!token) {
@@ -17,13 +19,30 @@ export default async function handler(req, res) {
         return res.status(401).json({ message: 'Invalid token' });
     }
 
-    const artistsDataPath = path.join(process.cwd(), 'public', 'data', 'artists.json');
+    const paths = [
+        path.join(process.cwd(), 'public', 'data', 'artists.json'),
+        path.join(process.cwd(), 'data', 'artists.json'),
+    ];
 
     if (req.method === 'GET') {
         try {
-            const data = await fs.readFile(artistsDataPath, 'utf-8');
+            let data;
+            for (const p of paths) {
+                try {
+                    data = await fs.readFile(p, 'utf-8');
+                    break;
+                } catch (e) {
+                    continue;
+                }
+            }
+
+            if (!data) {
+                return res.status(404).json({ message: 'Artists data not found' });
+            }
+
             return res.status(200).json(JSON.parse(data));
         } catch (err) {
+            console.error('Error reading artists data:', err);
             return res.status(500).json({ message: 'Failed to read artists data' });
         }
     }
@@ -38,7 +57,7 @@ export default async function handler(req, res) {
 
             const artistsData = { artists };
 
-            await fs.writeFile(artistsDataPath, JSON.stringify(artistsData, null, 2));
+            await fs.writeFile(paths[0], JSON.stringify(artistsData, null, 2));
 
             return res.status(200).json({
                 message: 'Artists data updated successfully',
@@ -46,7 +65,7 @@ export default async function handler(req, res) {
             });
         } catch (err) {
             console.error('Error saving artists data:', err);
-            return res.status(500).json({ message: 'Failed to save artists data' });
+            return res.status(500).json({ message: 'Failed to save artists data', error: err.message });
         }
     }
 

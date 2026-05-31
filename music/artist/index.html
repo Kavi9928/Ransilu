@@ -112,6 +112,7 @@
             cursor: pointer;
             display: flex;
             flex-direction: column;
+            position: relative;
             transition: transform .24s ease, box-shadow .24s ease;
         }
         .artist-card:hover {
@@ -119,7 +120,8 @@
             box-shadow: 0 16px 30px rgba(2, 6, 23, 0.35);
         }
         .artist-image {
-            height: 248px;
+            height: 100%;
+            flex: 1;
             overflow: hidden;
             background: #0f172a;
         }
@@ -132,7 +134,11 @@
         .artist-card:hover .artist-image img { transform: scale(1.05); }
 
         .artist-body {
-            flex: 1;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            min-height: 92px;
             padding: 0.65rem 0.9rem;
             display: flex;
             flex-direction: column;
@@ -140,6 +146,17 @@
             align-items: center;
             gap: 0.45rem;
             text-align: center;
+            background: #06162f;
+            border-top: 1px solid rgba(255,255,255,0.18);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity .28s ease, transform .28s ease;
+            pointer-events: none;
+        }
+        .artist-card:focus-within .artist-body,
+        .artist-card:hover .artist-body {
+            opacity: 1;
+            transform: translateY(0);
         }
         .artist-body h3 {
             font-family: var(--font-display);
@@ -462,7 +479,6 @@
             .artists-carousel { grid-template-columns: 40px 1fr 40px; }
             .artists-nav { width: 40px; height: 40px; }
             .artists-track { grid-auto-columns: minmax(160px, 1fr); }
-            .artist-image { height: 220px; }
             .spotlight-copy { padding: 3rem 1.3rem 3rem 4rem; }
             .spotlight-thumbs { padding: 0.8rem 1.1rem 1rem; }
         }
@@ -472,7 +488,6 @@
             .artists-section { padding: 0.8rem; }
             .artists-track { grid-auto-columns: minmax(150px, 1fr); }
             .artist-card { min-height: 292px; }
-            .artist-image { height: 194px; }
             .artist-body h3 { font-size: 1.36rem; }
             .artist-body p { font-size: 0.66rem; }
             .spotlight-shell {

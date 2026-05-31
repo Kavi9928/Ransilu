@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export default async function handler(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+
     const token = req.headers.authorization?.replace('Bearer ', '');
 
     if (!token) {
@@ -9,7 +11,6 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Verify token
         const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
         if (decoded.exp < Date.now()) {
             return res.status(401).json({ message: 'Token expired' });
@@ -18,13 +19,34 @@ export default async function handler(req, res) {
         return res.status(401).json({ message: 'Invalid token' });
     }
 
-    const storeDataPath = path.join(process.cwd(), 'public', 'data', 'store.json');
+    // Try multiple paths
+    const paths = [
+        path.join(process.cwd(), 'public', 'data', 'store.json'),
+        path.join(process.cwd(), 'data', 'store.json'),
+    ];
+
+    let dataPath = paths[0];
 
     if (req.method === 'GET') {
         try {
-            const data = await fs.readFile(storeDataPath, 'utf-8');
+            let data;
+            for (const p of paths) {
+                try {
+                    data = await fs.readFile(p, 'utf-8');
+                    dataPath = p;
+                    break;
+                } catch (e) {
+                    continue;
+                }
+            }
+
+            if (!data) {
+                return res.status(404).json({ message: 'Store data not found' });
+            }
+
             return res.status(200).json(JSON.parse(data));
         } catch (err) {
+            console.error('Error reading store data:', err);
             return res.status(500).json({ message: 'Failed to read store data' });
         }
     }
@@ -42,7 +64,8 @@ export default async function handler(req, res) {
                 collections: collections || []
             };
 
-            await fs.writeFile(storeDataPath, JSON.stringify(storeData, null, 2));
+            // Write to public folder for Vercel
+            await fs.writeFile(paths[0], JSON.stringify(storeData, null, 2));
 
             return res.status(200).json({
                 message: 'Store data updated successfully',
@@ -50,7 +73,7 @@ export default async function handler(req, res) {
             });
         } catch (err) {
             console.error('Error saving store data:', err);
-            return res.status(500).json({ message: 'Failed to save store data' });
+            return res.status(500).json({ message: 'Failed to save store data', error: err.message });
         }
     }
 

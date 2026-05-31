@@ -1,0 +1,24 @@
+{
+  "programs": [
+    {
+      "id": "morning-show",
+      "title": "Morning Drive",
+      "host": "DJ Silva",
+      "description": "Wake up with the best hits of the day",
+      "schedule": "6:00 AM - 10:00 AM",
+      "image": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=700&auto=format&fit=crop",
+      "streamUrl": ""
+    }
+  ],
+  "episodes": [
+    {
+      "id": "episode-001",
+      "programId": "morning-show",
+      "title": "Episode 1 - May 31",
+      "date": "2026-05-31",
+      "duration": "240",
+      "audioUrl": "",
+      "description": ""
+    }
+  ]
+}
