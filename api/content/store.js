@@ -16,10 +16,13 @@ async function getBlobData() {
 
 async function setBlobData(data) {
     try {
+        console.log('Attempting Blob write, token available:', !!process.env.BLOB_READ_WRITE_TOKEN);
+        console.log('Blob store ID:', process.env.BLOB_STORE_ID);
         await put(BLOB_KEY, data, { access: 'public' });
+        console.log('Blob write successful');
         return true;
     } catch (e) {
-        console.error('Blob write failed:', e.message);
+        console.error('Blob write failed:', e.message, e.code);
         return false;
     }
 }
