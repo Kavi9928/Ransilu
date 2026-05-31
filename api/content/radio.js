@@ -4,6 +4,26 @@ import { put, get } from '@vercel/blob';
 
 const BLOB_KEY = 'radio.json';
 
+async function getBlobData() {
+    try {
+        const blob = await get(BLOB_KEY);
+        if (blob) return await blob.text();
+    } catch (e) {
+        // Blob not available, will fall back to filesystem
+    }
+    return null;
+}
+
+async function setBlobData(data) {
+    try {
+        await put(BLOB_KEY, data, { access: 'public' });
+        return true;
+    } catch (e) {
+        console.error('Blob write failed:', e.message);
+        return false;
+    }
+}
+
 export default async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
 
@@ -22,25 +42,21 @@ export default async function handler(req, res) {
         return res.status(401).json({ message: 'Invalid token' });
     }
 
+    const paths = [
+        path.join(process.cwd(), 'public', 'data', 'radio.json'),
+        path.join(process.cwd(), 'data', 'radio.json'),
+    ];
+
     if (req.method === 'GET') {
         try {
-            let data;
-            try {
-                const blob = await get(BLOB_KEY);
-                if (blob) {
-                    data = await blob.text();
-                }
-            } catch (e) {
-                // Fallback to filesystem for initial data
-                const paths = [
-                    path.join(process.cwd(), 'public', 'data', 'radio.json'),
-                    path.join(process.cwd(), 'data', 'radio.json'),
-                ];
+            let data = await getBlobData();
+
+            if (!data) {
                 for (const p of paths) {
                     try {
                         data = await fs.readFile(p, 'utf-8');
                         break;
-                    } catch (err) {
+                    } catch (e) {
                         continue;
                     }
                 }
@@ -70,7 +86,15 @@ export default async function handler(req, res) {
                 episodes: episodes || []
             };
 
-            await put(BLOB_KEY, JSON.stringify(radioData, null, 2), { access: 'public' });
+            const dataJson = JSON.stringify(radioData, null, 2);
+            const blobSuccess = await setBlobData(dataJson);
+
+            if (!blobSuccess) {
+                return res.status(503).json({
+                    message: 'Vercel Blob not configured. Set up persistent storage at https://vercel.com/docs/storage/vercel-blob/quickstart',
+                    data: radioData
+                });
+            }
 
             return res.status(200).json({
                 message: 'Radio data updated successfully',
