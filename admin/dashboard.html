@@ -255,8 +255,26 @@
 
             <!-- Store Section -->
             <div class="content-section" id="store">
-                <h2>Store Products</h2>
-                <p>Store management coming soon...</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <h2>Store Products</h2>
+                    <button id="addProductBtn" style="padding: 10px 20px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px;">+ Add Product</button>
+                </div>
+                <div id="storeLoading" style="text-align: center; padding: 40px;">Loading products...</div>
+                <div id="storeTable" style="display: none; background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead style="background: #f1f5f9; border-bottom: 2px solid #e2e8f0;">
+                            <tr>
+                                <th style="padding: 16px; text-align: left; font-weight: 600; font-size: 13px; color: #64748b;">Image</th>
+                                <th style="padding: 16px; text-align: left; font-weight: 600; font-size: 13px; color: #64748b;">Title</th>
+                                <th style="padding: 16px; text-align: left; font-weight: 600; font-size: 13px; color: #64748b;">Artist</th>
+                                <th style="padding: 16px; text-align: left; font-weight: 600; font-size: 13px; color: #64748b;">Type</th>
+                                <th style="padding: 16px; text-align: left; font-weight: 600; font-size: 13px; color: #64748b;">Format</th>
+                                <th style="padding: 16px; text-align: left; font-weight: 600; font-size: 13px; color: #64748b;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody"></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Radio Section -->
@@ -352,6 +370,87 @@
             localStorage.removeItem('admin_token');
             localStorage.removeItem('admin_user');
             window.location.href = './index.html';
+        });
+
+        // Store Products Management
+        let storeProducts = [];
+
+        // Load products when Store section is clicked
+        document.querySelector('[data-section="store"]').addEventListener('click', loadStoreProducts);
+
+        async function loadStoreProducts() {
+            const loading = document.getElementById('storeLoading');
+            const table = document.getElementById('storeTable');
+            const tbody = document.getElementById('productsTableBody');
+
+            loading.style.display = 'block';
+            table.style.display = 'none';
+
+            try {
+                const response = await fetch('/data/store.json');
+                const data = await response.json();
+                storeProducts = data.products || [];
+
+                if (storeProducts.length === 0) {
+                    loading.innerHTML = '<p style="color: #64748b;">No products yet. Click "Add Product" to create one.</p>';
+                    return;
+                }
+
+                tbody.innerHTML = storeProducts.map((product, idx) => `
+                    <tr style="border-bottom: 1px solid #e2e8f0; hover: background: #f8fafc;">
+                        <td style="padding: 16px;"><img src="${product.image}" alt="" style="width: 40px; height: 40px; border-radius: 6px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/40'"></td>
+                        <td style="padding: 16px; font-weight: 600;">${product.title}</td>
+                        <td style="padding: 16px;">${product.artist}</td>
+                        <td style="padding: 16px;"><span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; background: #dbeafe; color: #1e40af;">${product.type}</span></td>
+                        <td style="padding: 16px;"><span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; background: #f1f5f9; color: #64748b;">${product.format}</span></td>
+                        <td style="padding: 16px;">
+                            <button onclick="editProduct(${idx})" style="background: #3b82f6; color: white; padding: 6px 12px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; margin-right: 8px;">Edit</button>
+                            <button onclick="deleteProduct(${idx})" style="background: #ef4444; color: white; padding: 6px 12px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                loading.style.display = 'none';
+                table.style.display = 'block';
+            } catch (err) {
+                loading.innerHTML = '<p style="color: #dc2626;">Failed to load products. ' + err.message + '</p>';
+            }
+        }
+
+        function deleteProduct(idx) {
+            if (!confirm('Delete "' + storeProducts[idx].title + '"?')) return;
+            storeProducts.splice(idx, 1);
+            saveProducts();
+        }
+
+        function editProduct(idx) {
+            alert('Edit feature coming soon. For now, you can delete and re-add products, or edit store.json directly.');
+        }
+
+        async function saveProducts() {
+            try {
+                const response = await fetch('/api/content/store', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ products: storeProducts })
+                });
+
+                if (response.ok) {
+                    alert('Products saved successfully!');
+                    loadStoreProducts();
+                } else {
+                    alert('Failed to save products');
+                }
+            } catch (err) {
+                alert('Error saving: ' + err.message);
+            }
+        }
+
+        document.getElementById('addProductBtn').addEventListener('click', () => {
+            alert('Add product feature coming soon. You can add products by editing the store.json file directly.');
         });
     </script>
 </body>
