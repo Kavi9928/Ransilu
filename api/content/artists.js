@@ -1,5 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { put, get } from '@vercel/blob';
+
+const BLOB_KEY = 'artists.json';
 
 export default async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -19,20 +22,27 @@ export default async function handler(req, res) {
         return res.status(401).json({ message: 'Invalid token' });
     }
 
-    const paths = [
-        path.join(process.cwd(), 'public', 'data', 'artists.json'),
-        path.join(process.cwd(), 'data', 'artists.json'),
-    ];
-
     if (req.method === 'GET') {
         try {
             let data;
-            for (const p of paths) {
-                try {
-                    data = await fs.readFile(p, 'utf-8');
-                    break;
-                } catch (e) {
-                    continue;
+            try {
+                const blob = await get(BLOB_KEY);
+                if (blob) {
+                    data = await blob.text();
+                }
+            } catch (e) {
+                // Fallback to filesystem for initial data
+                const paths = [
+                    path.join(process.cwd(), 'public', 'data', 'artists.json'),
+                    path.join(process.cwd(), 'data', 'artists.json'),
+                ];
+                for (const p of paths) {
+                    try {
+                        data = await fs.readFile(p, 'utf-8');
+                        break;
+                    } catch (err) {
+                        continue;
+                    }
                 }
             }
 
@@ -57,7 +67,7 @@ export default async function handler(req, res) {
 
             const artistsData = { artists };
 
-            await fs.writeFile(paths[0], JSON.stringify(artistsData, null, 2));
+            await put(BLOB_KEY, JSON.stringify(artistsData, null, 2), { access: 'public' });
 
             return res.status(200).json({
                 message: 'Artists data updated successfully',

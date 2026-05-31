@@ -1,5 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { put, get } from '@vercel/blob';
+
+const BLOB_KEY = 'store.json';
 
 export default async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -19,24 +22,27 @@ export default async function handler(req, res) {
         return res.status(401).json({ message: 'Invalid token' });
     }
 
-    // Try multiple paths
-    const paths = [
-        path.join(process.cwd(), 'public', 'data', 'store.json'),
-        path.join(process.cwd(), 'data', 'store.json'),
-    ];
-
-    let dataPath = paths[0];
-
     if (req.method === 'GET') {
         try {
             let data;
-            for (const p of paths) {
-                try {
-                    data = await fs.readFile(p, 'utf-8');
-                    dataPath = p;
-                    break;
-                } catch (e) {
-                    continue;
+            try {
+                const blob = await get(BLOB_KEY);
+                if (blob) {
+                    data = await blob.text();
+                }
+            } catch (e) {
+                // Fallback to filesystem for initial data
+                const paths = [
+                    path.join(process.cwd(), 'public', 'data', 'store.json'),
+                    path.join(process.cwd(), 'data', 'store.json'),
+                ];
+                for (const p of paths) {
+                    try {
+                        data = await fs.readFile(p, 'utf-8');
+                        break;
+                    } catch (err) {
+                        continue;
+                    }
                 }
             }
 
@@ -64,8 +70,7 @@ export default async function handler(req, res) {
                 collections: collections || []
             };
 
-            // Write to public folder for Vercel
-            await fs.writeFile(paths[0], JSON.stringify(storeData, null, 2));
+            await put(BLOB_KEY, JSON.stringify(storeData, null, 2), { access: 'public' });
 
             return res.status(200).json({
                 message: 'Store data updated successfully',
