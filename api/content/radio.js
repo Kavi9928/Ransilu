@@ -77,7 +77,7 @@ export default async function handler(req, res) {
             const dataJson = JSON.stringify(radioData, null, 2);
 
             try {
-                await put('radio.json', dataJson, { access: 'public' });
+                await put('radio.json', dataJson);
             } catch (blobErr) {
                 console.error('Blob error:', blobErr.message);
                 throw blobErr;

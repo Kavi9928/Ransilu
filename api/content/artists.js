@@ -74,7 +74,7 @@ export default async function handler(req, res) {
             const dataJson = JSON.stringify(artistsData, null, 2);
 
             try {
-                await put('artists.json', dataJson, { access: 'public' });
+                await put('artists.json', dataJson);
             } catch (blobErr) {
                 console.error('Blob error:', blobErr.message);
                 throw blobErr;

@@ -77,7 +77,7 @@ export default async function handler(req, res) {
             const dataJson = JSON.stringify(teledramaData, null, 2);
 
             try {
-                await put('teledrama.json', dataJson, { access: 'public' });
+                await put('teledrama.json', dataJson);
             } catch (blobErr) {
                 console.error('Blob error:', blobErr.message);
                 throw blobErr;

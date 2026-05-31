@@ -77,7 +77,7 @@ export default async function handler(req, res) {
             const dataJson = JSON.stringify(storeData, null, 2);
 
             try {
-                await put('store.json', dataJson, { access: 'public' });
+                await put('store.json', dataJson);
             } catch (blobErr) {
                 console.error('Blob error:', blobErr.message);
                 throw blobErr;
