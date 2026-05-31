@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ransilu Music Artists - Artist profiles, song writers, and music directors.">
+    <title>Ransilu Music | Artists</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .artists-page {
+            padding: calc(68px + 2rem) 0 3rem;
+            background: linear-gradient(180deg, #e8edf5 0%, #f5f7fb 56%, #eef2f7 100%);
+            min-height: 100vh;
+        }
+        .artists-shell { display: grid; gap: 2.4rem; }
+
+        .artists-hero {
+            text-align: center;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .artists-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 5.4rem);
+            letter-spacing: 2.4px;
+            line-height: 0.9;
+            margin-top: 0.55rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 1.05rem;
+        }
+        .artists-hero h1::before,
+        .artists-hero h1::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            border-radius: 999px;
+            background: #4f6fcb;
+            transform-origin: center;
+        }
+        .artists-hero h1::before {
+            width: 108%;
+            height: 4px;
+            bottom: 0.2rem;
+            transform: translateX(-50%) rotate(-1deg);
+        }
+        .artists-hero h1::after {
+            width: 82%;
+            height: 5px;
+            bottom: -0.04rem;
+            transform: translateX(-41%) rotate(-2.8deg);
+        }
+        .artists-hero p {
+            color: var(--muted);
+            margin-top: 0.7rem;
+        }
+
+        .artists-section {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 1.05rem;
+            box-shadow: none;
+        }
+        .songwriters-section {
+            margin-top: 1rem;
+        }
+        .artists-head {
+            text-align: center;
+            margin: 0.35rem 0 1rem;
+        }
+        .artists-head h2 {
+            font-family: var(--font-display);
+            letter-spacing: 2px;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 0.92;
+        }
+        .artists-head p {
+            color: var(--muted);
+            margin-top: 0.3rem;
+        }
+
+        .artists-carousel {
+            display: grid;
+            grid-template-columns: 48px 1fr 48px;
+            gap: 0.72rem;
+            align-items: center;
+        }
+        .artists-track {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: minmax(190px, 1fr);
+            gap: 0;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 0.1rem;
+        }
+        .artists-track::-webkit-scrollbar { height: 6px; }
+        .artists-track::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 999px; }
+
+        .artist-card {
+            background: #06162f;
+            border-radius: 12px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 10px 22px rgba(2, 6, 23, 0.28);
+            min-height: 330px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform .24s ease, box-shadow .24s ease;
+        }
+        .artist-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 30px rgba(2, 6, 23, 0.35);
+        }
+        .artist-image {
+            height: 100%;
+            flex: 1;
+            overflow: hidden;
+            background: #0f172a;
+        }
+        .artist-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .36s ease;
+        }
+        .artist-card:hover .artist-image img { transform: scale(1.05); }
+
+        .artist-body {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            min-height: 92px;
+            padding: 0.65rem 0.9rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.45rem;
+            text-align: center;
+            background: #06162f;
+            border-top: 1px solid rgba(255,255,255,0.18);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity .28s ease, transform .28s ease;
+            pointer-events: none;
+        }
+        .artist-card:focus-within .artist-body,
+        .artist-card:hover .artist-body {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .artist-body h3 {
+            font-family: var(--font-display);
+            font-size: 1.58rem;
+            line-height: 0.95;
+            color: #fff;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+        .artist-body p {
+            margin: 0;
+            color: #8ec5ff;
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .artists-nav {
+            width: 48px;
+            height: 48px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.36);
+            background: rgba(255, 255, 255, 0.95);
+            color: #ef4444;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+        }
+        .artists-nav i { font-size: 1.24rem; }
+
+        .bands-showcase {
+            position: relative;
+            min-height: 560px;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            background: #090f1c;
+        }
+        .bands-showcase-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(120deg, rgba(15, 23, 42, 0.52), rgba(15, 23, 42, 0.2)),
+                url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;
+            filter: sepia(0.48) saturate(0.75) brightness(0.85);
+        }
+        .bands-showcase-overlay {
+            position: relative;
+            z-index: 1;
+            min-height: 560px;
+            display: flex;
+            align-items: center;
+            padding: 1.8rem;
+        }
+        .discography-panel {
+            width: min(680px, 100%);
+            background: rgba(21, 16, 12, 0.84);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
+            border-radius: 10px;
+            padding: 1.5rem;
+            backdrop-filter: blur(2px);
+        }
+        .discography-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.24);
+            padding-bottom: 0.7rem;
+            margin-bottom: 1rem;
+        }
+        .discography-title {
+            font-family: var(--font-display);
+            letter-spacing: 2px;
+            font-size: clamp(2.1rem, 5vw, 3rem);
+            color: #f8fafc;
+            line-height: 0.9;
+        }
+        .discography-band {
+            color: rgba(255, 255, 255, 0.82);
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            margin-top: 0.35rem;
+        }
+        .disc-nav-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .disc-nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(17, 24, 39, 0.45);
+            color: #f43f5e;
+            display: grid;
+            place-items: center;
+        }
+        .disc-list {
+            display: grid;
+            gap: 0.9rem;
+        }
+        .disc-item {
+            display: grid;
+            grid-template-columns: 112px 1fr;
+            gap: 0.85rem;
+            align-items: start;
+            padding: 0.35rem;
+            border-radius: 8px;
+            background: rgba(2, 6, 23, 0.24);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+        }
+        .disc-cover {
+            width: 112px;
+            height: 88px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+        .disc-copy h4 {
+            color: #f8fafc;
+            font-size: 0.88rem;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-bottom: 0.15rem;
+        }
+        .disc-year {
+            color: #fca5a5;
+            font-size: 0.74rem;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+        }
+        .disc-tracks {
+            margin-top: 0.4rem;
+            display: grid;
+            gap: 0.16rem;
+        }
+        .disc-tracks p {
+            color: rgba(226, 232, 240, 0.9);
+            font-size: 0.72rem;
+            letter-spacing: 0.45px;
+            text-transform: uppercase;
+        }
+        .disc-more {
+            margin-top: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 74px;
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            background: #dc2626;
+            color: #fff;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .spotlight {
+            position: fixed;
+            inset: 0;
+            z-index: 1100;
+            display: none;
+        }
+        .spotlight.open { display: block; }
+        .spotlight-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.84);
+            backdrop-filter: blur(6px);
+        }
+        .spotlight-shell {
+            position: relative;
+            z-index: 1;
+            width: min(1120px, calc(100% - 2rem));
+            margin: 1.9rem auto;
+            min-height: min(690px, calc(100vh - 3.8rem));
+            border-radius: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            overflow: hidden;
+            background: #020611;
+            box-shadow: 0 36px 70px rgba(2, 6, 23, 0.52);
+        }
+        .spotlight-bg {
+            position: absolute;
+            inset: 0;
+            background-position: center;
+            background-size: cover;
+            filter: brightness(0.8);
+        }
+        .spotlight-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(3, 9, 24, 0.94) 0%, rgba(3, 9, 24, 0.74) 44%, rgba(3, 9, 24, 0.28) 78%, rgba(3, 9, 24, 0.82) 100%),
+                linear-gradient(180deg, rgba(3, 9, 24, 0.08), rgba(3, 9, 24, 0.42));
+        }
+        .spotlight-main {
+            position: relative;
+            z-index: 1;
+            min-height: inherit;
+            display: grid;
+            grid-template-rows: 1fr auto;
+        }
+        .spotlight-copy {
+            max-width: 540px;
+            padding: 3.4rem 2.8rem 3.4rem 5.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .spotlight-kicker {
+            color: #f43f5e;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+        .spotlight-copy h2 {
+            font-family: var(--font-display);
+            color: #fff;
+            font-size: clamp(2.8rem, 8vw, 6.2rem);
+            line-height: 0.88;
+            letter-spacing: 2px;
+            margin-top: 0.7rem;
+        }
+        .spotlight-role {
+            margin-top: 0.7rem;
+            color: #fca5a5;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            font-size: 0.84rem;
+        }
+        .spotlight-copy p {
+            margin-top: 1rem;
+            color: #cbd5e1;
+            line-height: 1.75;
+        }
+        .spotlight-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1.4rem;
+        }
+
+        .spotlight-thumbs {
+            display: flex;
+            gap: 0.65rem;
+            overflow-x: auto;
+            padding: 1rem 2.6rem 1.3rem;
+        }
+        .spotlight-thumb {
+            width: 84px;
+            height: 112px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid rgba(148, 163, 184, 0.5);
+            opacity: 0.74;
+            flex: 0 0 auto;
+            transition: transform .22s ease, border-color .22s ease, opacity .22s ease;
+        }
+        .spotlight-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .spotlight-thumb.active,
+        .spotlight-thumb:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+            border-color: #f43f5e;
+        }
+
+        .spotlight-close {
+            position: absolute;
+            top: 0.9rem;
+            right: 1rem;
+            z-index: 3;
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.24);
+            background: rgba(2, 6, 23, 0.62);
+            color: #fff;
+            display: grid;
+            place-items: center;
+        }
+        .spotlight-side-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.24);
+            background: rgba(2, 6, 23, 0.66);
+            color: #f43f5e;
+            display: grid;
+            place-items: center;
+        }
+        .spotlight-prev { left: 1rem; }
+        .spotlight-next { right: 1rem; }
+
+        .artist-footer .footer-sub-logo {
+            color: #93c5fd;
+            font-size: 1.7rem;
+            letter-spacing: 0.4px;
+            margin-bottom: 0.85rem;
+            font-family: var(--font-display);
+        }
+
+        .artist-footer .footer-desc {
+            color: #94a3b8;
+            max-width: 420px;
+            line-height: 1.8;
+            font-size: 0.88rem;
+        }
+
+        @media (max-width: 900px) {
+            .artists-carousel { grid-template-columns: 40px 1fr 40px; }
+            .artists-nav { width: 40px; height: 40px; }
+            .artists-track { grid-auto-columns: minmax(160px, 1fr); }
+            .spotlight-copy { padding: 3rem 1.3rem 3rem 4rem; }
+            .spotlight-thumbs { padding: 0.8rem 1.1rem 1rem; }
+        }
+
+        @media (max-width: 640px) {
+            .artists-page { padding-top: calc(68px + 1.4rem); }
+            .artists-section { padding: 0.8rem; }
+            .artists-track { grid-auto-columns: minmax(150px, 1fr); }
+            .artist-card { min-height: 292px; }
+            .artist-body h3 { font-size: 1.36rem; }
+            .artist-body p { font-size: 0.66rem; }
+            .spotlight-shell {
+                width: calc(100% - 1rem);
+                margin: 0.5rem auto;
+                min-height: calc(100vh - 1rem);
+            }
+            .spotlight-side-nav {
+                width: 36px;
+                height: 36px;
+                top: auto;
+                bottom: 8rem;
+            }
+            .spotlight-prev { left: 0.65rem; }
+            .spotlight-next { right: 0.65rem; }
+            .spotlight-copy { padding: 2.8rem 1rem 2.8rem 3.2rem; }
+            .spotlight-copy h2 { font-size: clamp(2.3rem, 11vw, 3.7rem); }
+            .spotlight-thumbs { gap: 0.5rem; padding: 0.6rem 0.7rem 0.75rem; }
+            .spotlight-thumb { width: 64px; height: 84px; }
+
+            .bands-showcase-overlay {
+                padding: 0.75rem;
+            }
+            .discography-panel {
+                padding: 1rem;
+            }
+            .disc-item {
+                grid-template-columns: 92px 1fr;
+            }
+            .disc-cover {
+                width: 92px;
+                height: 76px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../" class="logo-box">
+                <div class="logo-circle"><span>R</span></div>
+                <div class="logo-text">RANSILU <span class="logo-sub">MUSIC</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../">Home</a></li>
+                <li><a href="../store/">Store</a></li>
+                <li><a href="./">Artists</a></li>
+                <li><a href="../about/">About Us</a></li>
+            </ul>
+            <a href="../../radio/" class="live-radio-btn">
+                <span class="live-dot"></span> Live Radio
+            </a>
+        </div>
+    </nav>
+
+    <main class="artists-page">
+        <div class="container artists-shell">
+            <header class="artists-hero">
+                <h1>RANSILU ARTISTS</h1>
+                <p>Artist profiles, song writers profiles, and music directors profiles in one showcase.</p>
+            </header>
+
+            <section class="artists-section">
+                <div class="artists-head">
+                    <h2>ARTIST PROFILES</h2>
+                    <p>Lead and supporting performers of Ransilu productions.</p>
+                </div>
+                <div class="artists-carousel">
+                    <button class="artists-nav" data-dir="prev" data-track="artist-main-track" aria-label="Previous artist"><i class="ph ph-caret-left"></i></button>
+                    <div class="artists-track" id="artist-main-track"></div>
+                    <button class="artists-nav" data-dir="next" data-track="artist-main-track" aria-label="Next artist"><i class="ph ph-caret-right"></i></button>
+                </div>
+            </section>
+
+            <section class="artists-section songwriters-section">
+                <div class="artists-head">
+                    <h2>SONG WRITERS PROFILES</h2>
+                    <p>Writers crafting unforgettable melodies and lyrics.</p>
+                </div>
+                <div class="artists-carousel">
+                    <button class="artists-nav" data-dir="prev" data-track="artist-writers-track" aria-label="Previous writer"><i class="ph ph-caret-left"></i></button>
+                    <div class="artists-track" id="artist-writers-track"></div>
+                    <button class="artists-nav" data-dir="next" data-track="artist-writers-track" aria-label="Next writer"><i class="ph ph-caret-right"></i></button>
+                </div>
+            </section>
+
+            <section class="artists-section">
+                <div class="artists-head">
+                    <h2>MUSIC DIRECTORS PROFILES</h2>
+                    <p>Directors defining sound and emotion in each production.</p>
+                </div>
+                <div class="artists-carousel">
+                    <button class="artists-nav" data-dir="prev" data-track="artist-directors-track" aria-label="Previous director"><i class="ph ph-caret-left"></i></button>
+                    <div class="artists-track" id="artist-directors-track"></div>
+                    <button class="artists-nav" data-dir="next" data-track="artist-directors-track" aria-label="Next director"><i class="ph ph-caret-right"></i></button>
+                </div>
+            </section>
+
+            <section class="artists-section">
+                <div class="artists-head">
+                    <h2>MUSIC BANDS PROFILES</h2>
+                    <p>Bands delivering signature energy and live-stage power across Ransilu releases.</p>
+                </div>
+                <div class="bands-showcase">
+                    <div class="bands-showcase-bg"></div>
+                    <div class="bands-showcase-overlay">
+                        <article class="discography-panel">
+                            <header class="discography-head">
+                                <div>
+                                    <h3 class="discography-title">DISCOGRAPHY</h3>
+                                    <div class="discography-band" id="discography-band-name">Band Name</div>
+                                </div>
+                                <div class="disc-nav-group">
+                                    <button class="disc-nav-btn" id="band-disc-prev" aria-label="Previous band discography"><i class="ph ph-caret-left"></i></button>
+                                    <button class="disc-nav-btn" id="band-disc-next" aria-label="Next band discography"><i class="ph ph-caret-right"></i></button>
+                                </div>
+                            </header>
+
+                            <div class="disc-list" id="band-disc-list"></div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="spotlight" id="spotlight" aria-hidden="true">
+        <div class="spotlight-backdrop" data-close="true"></div>
+        <div class="spotlight-shell" role="dialog" aria-modal="true" aria-label="Profile spotlight">
+            <button class="spotlight-close" id="spotlight-close" aria-label="Close"><i class="ph ph-x"></i></button>
+            <button class="spotlight-side-nav spotlight-prev" id="spotlight-prev" aria-label="Previous"><i class="ph ph-caret-left"></i></button>
+            <button class="spotlight-side-nav spotlight-next" id="spotlight-next" aria-label="Next"><i class="ph ph-caret-right"></i></button>
+
+            <div class="spotlight-bg" id="spotlight-bg"></div>
+
+            <div class="spotlight-main">
+                <div class="spotlight-copy">
+                    <div class="spotlight-kicker" id="spotlight-kicker"></div>
+                    <h2 id="spotlight-name"></h2>
+                    <div class="spotlight-role" id="spotlight-role"></div>
+                    <p id="spotlight-summary"></p>
+                </div>
+                <div class="spotlight-thumbs" id="spotlight-thumbs"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer artist-footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <div class="footer-logo">RANSILU</div>
+                <div class="footer-sub-logo">Ransilu Enterprises</div>
+                <p class="footer-desc">Sri Lanka's premier entertainment network - music, drama, and radio, united in one universe.</p>
+                <div class="footer-social">
+                    <a href="#" title="Facebook"><i class="ph-fill ph-facebook-logo"></i></a>
+                    <a href="#" title="YouTube"><i class="ph-fill ph-youtube-logo"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h5>Explore</h5>
+                <ul>
+                    <li><a href="../">Record Label</a></li>
+                    <li><a href="../../#/cartoon">Cartoon</a></li>
+                    <li><a href="../../#/teledrama">Teledrama</a></li>
+                    <li><a href="./">Artists</a></li>
+                    <li><a href="../about/">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Contact Us</h5>
+                <ul>
+                    <li><a href="mailto:info@ransilu.com">info@ransilu.com</a></li>
+                    <li><a href="tel:+94112345678">+94 11 234 5678</a></li>
+                    <li><a href="tel:+94112345679">+94 11 234 5679</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="footer-copy" style="margin:1.5rem auto 0; text-align:center; color:#94a3b8; font-size:0.8rem; letter-spacing:0.6px;">© 2026 KeyProduction. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const groups = {
+            artists: {
+                label: 'Performer Spotlight',
+                summary: 'A standout performer in Ransilu productions, known for expressive screen presence and memorable character work.',
+                track: 'artist-main-track',
+                items: [
+                    { name: 'Jackson A.', role: 'Supporting Actor', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Yashoda W.', role: 'Supporting Actress', image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Damith R.', role: 'Character Actor', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Nelum P.', role: 'Guest Star', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Nadeesha K.', role: 'Lead Actress', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=700&auto=format&fit=crop' }
+                ]
+            },
+            writers: {
+                label: 'Writer Spotlight',
+                summary: 'A key creative voice shaping stories, lyrics, and dramatic structure behind the Ransilu entertainment universe.',
+                track: 'artist-writers-track',
+                items: [
+                    { name: 'R. Silva', role: 'Head Writer', image: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Anusha P.', role: 'Screenwriter', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'L. Rajapaksha', role: 'Story Writer', image: 'https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'H. Kumari', role: 'Script Editor', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'I. Senanayake', role: 'Dialogue Writer', image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'V. Dissanayake', role: 'Showrunner', image: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=700&auto=format&fit=crop' }
+                ]
+            },
+            directors: {
+                label: 'Director Spotlight',
+                summary: 'A visual storyteller guiding tone, rhythm, and emotional impact across high-profile Ransilu releases.',
+                track: 'artist-directors-track',
+                items: [
+                    { name: 'K. Fernando', role: 'Director', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'M. Perera', role: 'Assistant Director', image: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'D. Jayasuriya', role: 'Series Director', image: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'S. Weerasinghe', role: 'Creative Producer', image: 'https://images.unsplash.com/photo-1502764613149-7f1d229e230f?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Ruwan H.', role: 'Second Unit Director', image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Nethmi A.', role: 'Episode Director', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=700&auto=format&fit=crop' }
+                ]
+            },
+            bands: {
+                label: 'Band Spotlight',
+                summary: 'Performance-driven bands blending rhythm, harmony, and stage charisma into the Ransilu sound identity.',
+                track: 'artist-bands-track',
+                items: [
+                    { name: 'Midnight Echo', role: 'Alternative Rock Band', image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Blue Lotus', role: 'Fusion Band', image: 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Rhythm Union', role: 'Pop Band', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Stone River', role: 'Acoustic Band', image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Crimson Tide', role: 'Rock Band', image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=700&auto=format&fit=crop' },
+                    { name: 'Sonic Temple', role: 'Live Session Band', image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=700&auto=format&fit=crop' }
+                ]
+            }
+        };
+
+        const state = { groupKey: 'artists', index: 0 };
+        let bandIndex = 0;
+
+        const spotlight = document.getElementById('spotlight');
+        const spotlightBg = document.getElementById('spotlight-bg');
+        const spotlightKicker = document.getElementById('spotlight-kicker');
+        const spotlightName = document.getElementById('spotlight-name');
+        const spotlightRole = document.getElementById('spotlight-role');
+        const spotlightSummary = document.getElementById('spotlight-summary');
+        const spotlightThumbs = document.getElementById('spotlight-thumbs');
+
+        const bandDiscography = [
+            {
+                band: 'Midnight Echo',
+                albums: [
+                    {
+                        title: 'ALBUM #1',
+                        year: '2018',
+                        cover: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=700&auto=format&fit=crop',
+                        tracks: ['TRACK 1: PORTA FUSCE', 'TRACK 2: SUSCIPIT VARIUS MI', 'TRACK 3: CUM SOTIQUE', 'TRACK 4: PENATIBUS']
+                    },
+                    {
+                        title: 'ALBUM #2',
+                        year: '2021',
+                        cover: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=700&auto=format&fit=crop',
+                        tracks: ['TRACK 1: PORTA FUSCE', 'TRACK 2: SUSCIPIT VARIUS MI', 'TRACK 3: CUM SOTIQUE', 'TRACK 4: PENATIBUS']
+                    }
+                ]
+            },
+            {
+                band: 'Blue Lotus',
+                albums: [
+                    {
+                        title: 'ALBUM #1',
+                        year: '2019',
+                        cover: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=700&auto=format&fit=crop',
+                        tracks: ['TRACK 1: INCEPTOS', 'TRACK 2: HAC HABITASSE', 'TRACK 3: QUAM MORBI', 'TRACK 4: DONEC AUGUE']
+                    },
+                    {
+                        title: 'ALBUM #2',
+                        year: '2023',
+                        cover: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=700&auto=format&fit=crop',
+                        tracks: ['TRACK 1: MAURIS VITA', 'TRACK 2: ORNARE TELLUS', 'TRACK 3: EGET LIBERO', 'TRACK 4: JUSTO EROS']
+                    }
+                ]
+            },
+            {
+                band: 'Rhythm Union',
+                albums: [
+                    {
+                        title: 'ALBUM #1',
+                        year: '2017',
+                        cover: 'https://images.unsplash.com/photo-1487180144351-b8472da7d491?q=80&w=700&auto=format&fit=crop',
+                        tracks: ['TRACK 1: VOLUTPAT', 'TRACK 2: LIGULA RISUS', 'TRACK 3: LOREM IPSUM', 'TRACK 4: NISL POSUERE']
+                    },
+                    {
+                        title: 'ALBUM #2',
+                        year: '2020',
+                        cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=700&auto=format&fit=crop',
+                        tracks: ['TRACK 1: FEUGIAT', 'TRACK 2: NIBH EGET', 'TRACK 3: DIAM CURABITUR', 'TRACK 4: TELLUS VIVAMUS']
+                    }
+                ]
+            }
+        ];
+
+        const renderBandDiscography = () => {
+            const band = bandDiscography[bandIndex];
+            const bandNameEl = document.getElementById('discography-band-name');
+            const listEl = document.getElementById('band-disc-list');
+            if (!bandNameEl || !listEl) return;
+
+            bandNameEl.textContent = band.band;
+            listEl.innerHTML = band.albums.map((album) => `
+                <article class="disc-item">
+                    <img class="disc-cover" src="${album.cover}" alt="${album.title}">
+                    <div class="disc-copy">
+                        <h4>${album.title}</h4>
+                        <div class="disc-year">${album.year}</div>
+                        <div class="disc-tracks">
+                            ${album.tracks.map(track => `<p>${track}</p>`).join('')}
+                        </div>
+                        <button class="disc-more" type="button">More</button>
+                    </div>
+                </article>
+            `).join('');
+        };
+
+        const renderCards = () => {
+            Object.entries(groups).forEach(([groupKey, group]) => {
+                const track = document.getElementById(group.track);
+                if (!track) return;
+                track.innerHTML = group.items.map((item, index) => `
+                    <article class="artist-card" data-group="${groupKey}" data-index="${index}" tabindex="0" role="button" aria-label="Open ${item.name} profile">
+                        <div class="artist-image"><img src="${item.image}" alt="${item.name}" loading="lazy"></div>
+                        <div class="artist-body">
+                            <h3>${item.name}</h3>
+                            <p>${item.role}</p>
+                        </div>
+                    </article>
+                `).join('');
+            });
+        };
+
+        const updateThumbs = () => {
+            const currentGroup = groups[state.groupKey];
+            spotlightThumbs.innerHTML = currentGroup.items.map((item, idx) => `
+                <button class="spotlight-thumb ${idx === state.index ? 'active' : ''}" data-thumb-index="${idx}" aria-label="Show ${item.name}">
+                    <img src="${item.image}" alt="${item.name}">
+                </button>
+            `).join('');
+
+            spotlightThumbs.querySelectorAll('.spotlight-thumb').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.index = parseInt(btn.dataset.thumbIndex, 10);
+                    updateSpotlight();
+                });
+            });
+        };
+
+        const updateSpotlight = () => {
+            const group = groups[state.groupKey];
+            const item = group.items[state.index];
+
+            spotlightBg.style.backgroundImage = `url('${item.image}')`;
+            spotlightKicker.textContent = group.label;
+            spotlightName.textContent = item.name.toUpperCase();
+            spotlightRole.textContent = item.role;
+            spotlightSummary.textContent = group.summary;
+            updateThumbs();
+        };
+
+        const initCarouselAutoplay = () => {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            const trackIds = ['artist-main-track', 'artist-writers-track', 'artist-directors-track'];
+            const autoplayTimers = new Map();
+
+            const getJumpSize = (track) => {
+                const card = track.querySelector('.artist-card');
+                const styles = getComputedStyle(track);
+                const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+                return card ? card.getBoundingClientRect().width + gap : 190;
+            };
+
+            const tick = (track) => {
+                const jump = getJumpSize(track);
+                const maxScrollLeft = track.scrollWidth - track.clientWidth;
+                if (maxScrollLeft <= 0) return;
+
+                if (track.scrollLeft + jump >= maxScrollLeft - 2) {
+                    track.scrollTo({ left: 0, behavior: 'smooth' });
+                    return;
+                }
+
+                track.scrollBy({ left: jump, behavior: 'smooth' });
+            };
+
+            const stop = (track) => {
+                const timer = autoplayTimers.get(track);
+                if (timer) {
+                    clearInterval(timer);
+                    autoplayTimers.delete(track);
+                }
+            };
+
+            const start = (track) => {
+                stop(track);
+                const timer = setInterval(() => tick(track), 2800);
+                autoplayTimers.set(track, timer);
+            };
+
+            trackIds.forEach((id) => {
+                const track = document.getElementById(id);
+                if (!track) return;
+
+                start(track);
+
+                track.addEventListener('mouseenter', () => stop(track));
+                track.addEventListener('mouseleave', () => start(track));
+                track.addEventListener('focusin', () => stop(track));
+                track.addEventListener('focusout', () => start(track));
+                track.addEventListener('touchstart', () => stop(track), { passive: true });
+                track.addEventListener('touchend', () => start(track));
+            });
+        };
+
+        const openSpotlight = (groupKey, index) => {
+            state.groupKey = groupKey;
+            state.index = index;
+            updateSpotlight();
+            spotlight.classList.add('open');
+            spotlight.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeSpotlight = () => {
+            spotlight.classList.remove('open');
+            spotlight.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        };
+
+        const bindEvents = () => {
+            document.querySelectorAll('.artists-nav').forEach(button => {
+                button.addEventListener('click', () => {
+                    const track = document.getElementById(button.dataset.track);
+                    if (!track) return;
+                    const card = track.querySelector('.artist-card');
+                    const gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || '0') || 0;
+                    const jump = card ? card.getBoundingClientRect().width + gap : 190;
+                    const dir = button.dataset.dir === 'next' ? 1 : -1;
+                    track.scrollBy({ left: dir * jump * 2, behavior: 'smooth' });
+                });
+            });
+
+            document.querySelectorAll('.artist-card').forEach(card => {
+                const openFromCard = () => {
+                    const group = card.dataset.group;
+                    const idx = parseInt(card.dataset.index, 10);
+                    if (!groups[group] || Number.isNaN(idx)) return;
+                    openSpotlight(group, idx);
+                };
+
+                card.addEventListener('mouseenter', openFromCard);
+                card.addEventListener('click', openFromCard);
+                card.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openFromCard();
+                    }
+                });
+            });
+
+            document.getElementById('spotlight-close').addEventListener('click', closeSpotlight);
+            document.querySelectorAll('[data-close="true"]').forEach(el => el.addEventListener('click', closeSpotlight));
+
+            document.getElementById('spotlight-prev').addEventListener('click', () => {
+                const items = groups[state.groupKey].items;
+                state.index = (state.index - 1 + items.length) % items.length;
+                updateSpotlight();
+            });
+
+            document.getElementById('spotlight-next').addEventListener('click', () => {
+                const items = groups[state.groupKey].items;
+                state.index = (state.index + 1) % items.length;
+                updateSpotlight();
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (!spotlight.classList.contains('open')) return;
+                if (event.key === 'Escape') closeSpotlight();
+                if (event.key === 'ArrowLeft') document.getElementById('spotlight-prev').click();
+                if (event.key === 'ArrowRight') document.getElementById('spotlight-next').click();
+            });
+
+            const discPrev = document.getElementById('band-disc-prev');
+            const discNext = document.getElementById('band-disc-next');
+            if (discPrev && discNext) {
+                discPrev.addEventListener('click', () => {
+                    bandIndex = (bandIndex - 1 + bandDiscography.length) % bandDiscography.length;
+                    renderBandDiscography();
+                });
+                discNext.addEventListener('click', () => {
+                    bandIndex = (bandIndex + 1) % bandDiscography.length;
+                    renderBandDiscography();
+                });
+            }
+        };
+
+        renderCards();
+        renderBandDiscography();
+        bindEvents();
+        initCarouselAutoplay();
+    </script>
+</body>
+</html>

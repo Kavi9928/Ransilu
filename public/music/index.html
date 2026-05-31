@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ransilu Music — Sri Lanka's premier record label. Discover albums, singles, and music from the nation's top artists.">
+    <title>Ransilu Music | Record Label & Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ══ NAVBAR ══ -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../" class="logo-box">
+                <div class="logo-circle"><span>R</span></div>
+                <div class="logo-text">RANSILU <span class="logo-sub">MUSIC</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../">Home</a></li>
+                <li><a href="./store.html">Store</a></li>
+                <li><a href="./artist/">Artists</a></li>
+                <li><a href="./about/">About Us</a></li>
+            </ul>
+            <a href="../radio/" class="live-radio-btn">
+                <span class="live-dot"></span> Live Radio
+            </a>
+        </div>
+    </nav>
+
+    <!-- ══ HERO ══ -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container hero-content">
+            <div class="hero-layout">
+                <div class="hero-main">
+                    <div class="hero-badge">MUSIC HOME</div>
+                    <h1>RANSILU<br><span class="accent">MUSIC</span></h1>
+                    <div class="hero-subtitle">Soundtrack Of Sri Lanka.</div>
+                    <p class="hero-desc">The starting point of Sri Lanka's music icons. Explore featured artists, top albums, and timeless releases across every format.</p>
+                    <div class="hero-btns">
+                        <a href="./store.html" class="btn btn-primary"><i class="ph ph-disc"></i> CDs</a>
+                        <a href="./store.html" class="btn btn-outline"><i class="ph ph-vinyl-record"></i> Vinyl</a>
+                        <a href="./store.html" class="btn btn-outline"><i class="ph ph-cassette-tape"></i> Cassettes</a>
+                    </div>
+                </div>
+                <aside class="hero-side">
+                    <div class="hero-side-card">
+                        <div class="eyebrow-inline">Label Snapshot</div>
+                        <h3>DISCOVER THE RANSILU CATALOG</h3>
+                        <p>From Sinhala classics to modern releases, explore formats, artists, and label stories in one curated destination.</p>
+                        <a href="./artist/" class="btn btn-outline"><i class="ph ph-users-three"></i> View Artists</a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="hs"><strong class="hs-value" data-target="500" data-suffix="+">500+</strong><span>Tracks</span></div>
+                        <div class="hs"><strong class="hs-value" data-target="45">45</strong><span>Albums</span></div>
+                        <div class="hs"><strong class="hs-value" data-target="120" data-suffix="+">120+</strong><span>Artists</span></div>
+                        <div class="hs"><strong class="hs-value" data-target="28">28</strong><span>Years</span></div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ SEARCH ══ -->
+    <section class="section section-search">
+        <div class="container">
+            <div class="search-strip">
+                <div>
+                    <div class="eyebrow-inline">Search</div>
+                    <h2>Find an artist or release</h2>
+                    <p>Search the featured lineup before you explore the catalog.</p>
+                </div>
+                <form class="music-search" id="artist-search" role="search">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input id="artist-search-input" type="search" placeholder="Search artists, albums, labels..." aria-label="Search featured artists">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ ARTIST PROFILES (HOME) ══ -->
+    <section class="section home-artists-profile" id="home-artists-profiles">
+        <div class="container">
+            <div class="home-artists-shell">
+                <div class="section-header home-artists-heading">
+                    <div>
+                        <h2>ARTIST PROFILES</h2>
+                        <p>Lead and supporting performers of Ransilu productions.</p>
+                    </div>
+                </div>
+                <div class="home-artists-carousel">
+                    <button class="home-artists-nav" data-dir="prev" data-track="home-artist-track" aria-label="Previous artist"><i class="ph ph-caret-left"></i></button>
+                    <div class="home-artists-track" id="home-artist-track">
+                        <article class="home-artist-card" aria-label="Jackson A. profile">
+                            <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=700&auto=format&fit=crop" alt="Jackson A." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Jackson A.</h3></div>
+                        </article>
+                        <article class="home-artist-card" aria-label="Yashoda W. profile">
+                            <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=700&auto=format&fit=crop" alt="Yashoda W." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Yashoda W.</h3></div>
+                        </article>
+                        <article class="home-artist-card" aria-label="Damith R. profile">
+                            <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=700&auto=format&fit=crop" alt="Damith R." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Damith R.</h3></div>
+                        </article>
+                        <article class="home-artist-card" aria-label="Nelum P. profile">
+                            <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=700&auto=format&fit=crop" alt="Nelum P." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Nelum P.</h3></div>
+                        </article>
+                        <article class="home-artist-card" aria-label="Nadeesha K. profile">
+                            <div class="home-artist-image"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=700&auto=format&fit=crop" alt="Nadeesha K." loading="lazy"></div>
+                            <div class="home-artist-body"><h3>Nadeesha K.</h3></div>
+                        </article>
+                    </div>
+                    <button class="home-artists-nav" data-dir="next" data-track="home-artist-track" aria-label="Next artist"><i class="ph ph-caret-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ ALBUMS DISPLAY (HOME) ══ -->
+    <section class="section" id="albums">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2>ALBUMS DISPLAY</h2>
+                    <p>Featured releases from the Ransilu Music catalog</p>
+                </div>
+            </div>
+            <div id="productsGrid" class="products-grid">
+                <article class="product-card" data-type="album" data-format="cd" data-search="Ransilu Classics Nuwan">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=700&auto=format&fit=crop" alt="Ransilu Classics">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Album</span><span class="price">CD</span></div>
+                        <div class="product-title">Ransilu Classics</div>
+                        <div class="product-sub">Nuwan Perera</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="single" data-format="digital" data-search="Hithin Ena Song Kavindya">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1516280440502-65f536c646ae?w=700&auto=format&fit=crop" alt="Hithin Ena Song">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Single</span><span class="price">Digital</span></div>
+                        <div class="product-title">Hithin Ena Song</div>
+                        <div class="product-sub">Kavindya Silva</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="album" data-format="vinyl" data-search="Harsha Band Night Drive">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1539375665275-f9de415ef9ac?w=700&auto=format&fit=crop" alt="Night Drive">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Album</span><span class="price">Vinyl</span></div>
+                        <div class="product-title">Night Drive</div>
+                        <div class="product-sub">Harsha Band</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="single" data-format="cassette" data-search="Dilini Sanda Pahana">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=700&auto=format&fit=crop" alt="Sanda Pahana">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Single</span><span class="price">Cassette</span></div>
+                        <div class="product-title">Sanda Pahana</div>
+                        <div class="product-sub">Dilini Fernando</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="album" data-format="digital" data-search="Samange Saraliya Saman Jayathilaka">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1619983081563-430f63602796?w=700&auto=format&fit=crop" alt="Saraliya">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Album</span><span class="price">Digital</span></div>
+                        <div class="product-title">Saraliya</div>
+                        <div class="product-sub">Saman Jayathilaka</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="single" data-format="cd" data-search="Priya Kumari Film Song">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1533104816-cdd230239634?w=700&auto=format&fit=crop" alt="Film Song">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Single</span><span class="price">CD</span></div>
+                        <div class="product-title">Film Song</div>
+                        <div class="product-sub">Priya Kumari</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="album" data-format="cassette" data-search="Blue Memories Nadeesha">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1470229538611-16ba8c7ffbd7?w=700&auto=format&fit=crop" alt="Blue Memories">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Album</span><span class="price">Cassette</span></div>
+                        <div class="product-title">Blue Memories</div>
+                        <div class="product-sub">Nadeesha K.</div>
+                    </div>
+                </article>
+                <article class="product-card" data-type="single" data-format="vinyl" data-search="Street Pulse Prabath">
+                    <img class="product-cover" src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=700&auto=format&fit=crop" alt="Street Pulse">
+                    <div class="product-body">
+                        <div class="product-meta"><span class="type-pill">Single</span><span class="price">Vinyl</span></div>
+                        <div class="product-title">Street Pulse</div>
+                        <div class="product-sub">Prabath D.</div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FORMATS SECTION ══ -->
+    <section class="section section-alt" id="formats">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2>AVAILABLE FORMATS</h2>
+                    <p>Our music, your way</p>
+                </div>
+            </div>
+            <div class="format-grid">
+                <div class="format-card">
+                    <img src="https://images.unsplash.com/photo-1619983081563-430f63602796?w=400&auto=format&fit=crop" alt="Cassette">
+                    <div class="format-info">
+                        <i class="ph ph-cassette-tape"></i>
+                        <h3>Kassets</h3>
+                        <p>Classic analog warmth, collectible packaging</p>
+                    </div>
+                </div>
+                <div class="format-card">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&auto=format&fit=crop" alt="CD">
+                    <div class="format-info">
+                        <i class="ph ph-disc"></i>
+                        <h3>CD</h3>
+                        <p>Crystal clear digital audio quality</p>
+                    </div>
+                </div>
+                <div class="format-card">
+                    <img src="https://images.unsplash.com/photo-1598743400863-0038e76cb958?w=400&auto=format&fit=crop" alt="VCD/DVD">
+                    <div class="format-info">
+                        <i class="ph ph-film-strip"></i>
+                        <h3>VCD / DVD</h3>
+                        <p>Music videos and live concert recordings</p>
+                    </div>
+                </div>
+                <div class="format-card">
+                    <img src="https://images.unsplash.com/photo-1539375665275-f9de415ef9ac?w=400&auto=format&fit=crop" alt="Vinyl">
+                    <div class="format-info">
+                        <i class="ph ph-vinyl-record"></i>
+                        <h3>Vinyl</h3>
+                        <p>Premium limited-edition vinyl pressings</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ RECORD LABELS ══ -->
+    <section class="section section-alt" id="labels">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2>RECORD LABELS</h2>
+                    <p>Publishing partners and imprints under Ransilu Music</p>
+                </div>
+            </div>
+
+            <div class="label-grid">
+                <div class="label-card"><h4>Ransilu Originals</h4><p>Flagship releases and premium artist productions.</p></div>
+                <div class="label-card"><h4>Blue Tone Records</h4><p>Modern pop, youth tracks, and chart-focused singles.</p></div>
+                <div class="label-card"><h4>Heritage Sound</h4><p>Traditional and folk collections preserved for new audiences.</p></div>
+                <div class="label-card"><h4>Cinema Tracks</h4><p>Soundtracks and score-driven projects for visual storytelling.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ══ -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <div class="footer-logo">RANSILU MUSIC</div>
+                <p>Sri Lanka's premier record label — bringing the best of Sinhala music to the world.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="ph-fill ph-facebook-logo"></i></a>
+                    <a href="#"><i class="ph-fill ph-youtube-logo"></i></a>
+                    <a href="#"><i class="ph-fill ph-spotify-logo"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a href="../">Ransilu Home</a></li>
+                    <li><a href="../radio/">Ransilu Radio</a></li>
+                    <li><a href="./store.html">Store</a></li>
+                    <li><a href="./artist/">Artists</a></li>
+                    <li><a href="./about/">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Contact</h5>
+                <ul>
+                    <li><a href="mailto:music@ransilu.com">music@ransilu.com</a></li>
+                    <li><a href="tel:+94112345678">+94 11 234 5678</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="footer-copy" style="margin:1.5rem auto 0; text-align:center; color:#94a3b8; font-size:0.8rem; letter-spacing:0.6px;">© 2026 KeyProduction. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.album-card, .product-card, .format-card, .artist-card, .home-artist-card, .home-artists-heading, .section-header, .hero-main > *, .hero-side, .store-note').forEach(el => {
+            el.classList.add('anim-enter');
+            observer.observe(el);
+        });
+
+        const artistSearchForm = document.getElementById('artist-search');
+
+        artistSearchForm?.addEventListener('submit', e => {
+            e.preventDefault();
+        });
+
+        document.querySelectorAll('.home-artists-nav').forEach(button => {
+            button.addEventListener('click', () => {
+                const track = document.getElementById(button.dataset.track);
+                if (!track) return;
+                const card = track.querySelector('.home-artist-card');
+                const styles = getComputedStyle(track);
+                const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+                const jump = card ? card.getBoundingClientRect().width + gap : 190;
+                const dir = button.dataset.dir === 'next' ? 1 : -1;
+                track.scrollBy({ left: dir * jump * 2, behavior: 'smooth' });
+            });
+        });
+
+        const homeArtistsTrack = document.getElementById('home-artist-track');
+        let homeArtistsAutoplay = null;
+        const startHomeArtistsAutoplay = () => {
+            if (!homeArtistsTrack || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (homeArtistsAutoplay) clearInterval(homeArtistsAutoplay);
+            homeArtistsAutoplay = setInterval(() => {
+                const card = homeArtistsTrack.querySelector('.home-artist-card');
+                const styles = getComputedStyle(homeArtistsTrack);
+                const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+                const jump = card ? card.getBoundingClientRect().width + gap : 190;
+                const maxScrollLeft = homeArtistsTrack.scrollWidth - homeArtistsTrack.clientWidth;
+
+                if (maxScrollLeft <= 0) return;
+                if (homeArtistsTrack.scrollLeft + jump >= maxScrollLeft - 2) {
+                    homeArtistsTrack.scrollTo({ left: 0, behavior: 'smooth' });
+                } else {
+                    homeArtistsTrack.scrollBy({ left: jump, behavior: 'smooth' });
+                }
+            }, 2800);
+        };
+        const stopHomeArtistsAutoplay = () => {
+            if (homeArtistsAutoplay) {
+                clearInterval(homeArtistsAutoplay);
+                homeArtistsAutoplay = null;
+            }
+        };
+
+        homeArtistsTrack?.addEventListener('mouseenter', stopHomeArtistsAutoplay);
+        homeArtistsTrack?.addEventListener('mouseleave', startHomeArtistsAutoplay);
+        homeArtistsTrack?.addEventListener('focusin', stopHomeArtistsAutoplay);
+        homeArtistsTrack?.addEventListener('focusout', startHomeArtistsAutoplay);
+        startHomeArtistsAutoplay();
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const t = document.querySelector(a.getAttribute('href'));
+                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        const heroStats = document.querySelector('.hero-stats');
+        const heroStatValues = Array.from(document.querySelectorAll('.hs-value'));
+        let heroStatsAnimated = false;
+
+        const animateHeroStats = () => {
+            if (heroStatsAnimated) return;
+            heroStatsAnimated = true;
+
+            heroStats.classList.add('is-visible');
+
+            heroStatValues.forEach((el) => {
+                const target = parseInt(el.dataset.target || '0', 10);
+                const suffix = el.dataset.suffix || '';
+                const duration = 1200;
+                const startTime = performance.now();
+
+                const step = (now) => {
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = `${Math.round(target * eased)}${suffix}`;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        el.classList.add('hs-counting');
+                    }
+                };
+
+                requestAnimationFrame(step);
+            });
+        };
+
+        const heroStatsObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                animateHeroStats();
+                heroStatsObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.35 });
+
+        if (heroStats) heroStatsObserver.observe(heroStats);
+    </script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ransilu Web Radio — Live 24/7 Sinhala music streaming from Colombo, Sri Lanka.">
+    <title>Ransilu Radio | Live 24/7 Web Radio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ══ NAVBAR ══ -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../" class="logo-box">
+                <div class="logo-circle"><span>R</span></div>
+                <div class="logo-text">RANSILU <span class="logo-sub">RADIO</span></div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../">Home</a></li>
+                <li><a href="./programs/">Programs</a></li>
+                <li><a href="./about/">About</a></li>
+            </ul>
+            <div class="live-indicator">
+                <span class="live-dot"></span>
+                <span class="live-label">ON AIR</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ══ HERO — PLAYER ══ -->
+    <section class="radio-hero">
+        <div class="hero-bg-shapes">
+            <div class="shape s1"></div>
+            <div class="shape s2"></div>
+            <div class="shape s3"></div>
+        </div>
+        <div class="container hero-content">
+            <div class="hero-top">
+                <div class="hero-left">
+                    <div class="live-badge"><span class="pulse-dot"></span> LIVE NOW</div>
+                    <h1>RANSILU<br><span class="accent">WEB RADIO</span></h1>
+                    <p class="hero-desc">24/7 live Sinhala music, talk shows, and concert streams — broadcasting from our Colombo studio to the world.</p>
+                </div>
+                <div class="hero-right">
+                    <!-- Player Card -->
+                    <div class="player-card">
+                        <div class="player-ring ring-1"></div>
+                        <div class="player-ring ring-2"></div>
+                        <div class="player-inner">
+                            <div class="now-playing-label">NOW PLAYING</div>
+                            <div class="track-name" id="currentChannel">BBC World Service</div>
+                            <div class="track-artist"><span class="live-indicator-small">● LIVE 24/7</span></div>
+
+                            <!-- Waveform -->
+                            <div class="waveform" id="waveform">
+                                <span></span><span></span><span></span><span></span><span></span>
+                                <span></span><span></span><span></span><span></span><span></span>
+                                <span></span><span></span><span></span><span></span><span></span>
+                                <span></span><span></span><span></span><span></span><span></span>
+                            </div>
+
+                            <!-- Controls -->
+                            <div class="player-controls">
+                                <button class="ctrl-btn" id="playBtn" aria-label="Play">
+                                    <i class="ph-fill ph-play" id="playIcon"></i>
+                                </button>
+                            </div>
+
+                            <!-- Volume -->
+                            <div class="volume-row">
+                                <i class="ph ph-speaker-low"></i>
+                                <input type="range" min="0" max="100" value="80" class="vol-slider" id="volSlider">
+                                <i class="ph ph-speaker-high"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ STATS BAR ══ -->
+    <section class="stats-bar">
+        <div class="container stats-row">
+            <div class="stat"><strong class="stat-number" data-value="24" data-suffix="/7">24/7</strong><span>Live Streaming</span></div>
+            <div class="stat"><strong class="stat-number" data-value="50" data-suffix="K+">50K+</strong><span>Daily Listeners</span></div>
+            <div class="stat"><strong class="stat-number" data-value="1.3" data-suffix="M">1.3M</strong><span>Monthly Reach</span></div>
+            <div class="stat"><strong class="stat-number" data-value="15" data-suffix="+">15+</strong><span>Live Shows</span></div>
+        </div>
+    </section>
+
+    <!-- ══ SCHEDULE ══ -->
+    <section class="section" id="programs">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2>TODAY'S SCHEDULE</h2>
+                    <p>What's on air today</p>
+                </div>
+                <a href="./programs/" class="section-link-btn">View Full Programs</a>
+            </div>
+            <div class="schedule-grid">
+                <div class="schedule-card active">
+                    <div class="sch-time">6:00 AM</div>
+                    <div class="sch-body">
+                        <div class="sch-live">LIVE NOW</div>
+                        <h3>Morning Raaga</h3>
+                        <p>Start your day with soothing melodies and devotional music</p>
+                    </div>
+                </div>
+                <div class="schedule-card">
+                    <div class="sch-time">9:00 AM</div>
+                    <div class="sch-body">
+                        <h3>Ransilu Hits</h3>
+                        <p>The best of Sinhala pop, non-stop chart-toppers</p>
+                    </div>
+                </div>
+                <div class="schedule-card">
+                    <div class="sch-time">12:00 PM</div>
+                    <div class="sch-body">
+                        <h3>Lunch Break Mix</h3>
+                        <p>Feel-good music to power through your afternoon</p>
+                    </div>
+                </div>
+                <div class="schedule-card">
+                    <div class="sch-time">3:00 PM</div>
+                    <div class="sch-body">
+                        <h3>Kavibana Hour</h3>
+                        <p>Traditional and spiritual recitals from our heritage archives</p>
+                    </div>
+                </div>
+                <div class="schedule-card">
+                    <div class="sch-time">6:00 PM</div>
+                    <div class="sch-body">
+                        <h3>Drive Time</h3>
+                        <p>Evening commute vibes — upbeat hits and new releases</p>
+                    </div>
+                </div>
+                <div class="schedule-card">
+                    <div class="sch-time">9:00 PM</div>
+                    <div class="sch-body">
+                        <h3>Night Lounge</h3>
+                        <p>Relaxing acoustic sessions and love songs to end your day</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ ABOUT / FEATURES ══ -->
+    <section class="section section-alt" id="about">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="ph ph-broadcast"></i>
+                    <h3>Live 24/7</h3>
+                    <p>Non-stop broadcasting around the clock, every single day of the year.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="ph ph-music-notes"></i>
+                    <h3>Curated Playlists</h3>
+                    <p>Hand-picked music from Sri Lanka's finest artists and labels.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="ph ph-microphone-stage"></i>
+                    <h3>Live Shows</h3>
+                    <p>Exclusive live performances, interviews, and concert streams.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="ph ph-globe"></i>
+                    <h3>Global Reach</h3>
+                    <p>Listen from anywhere in the world — web, mobile, or smart speaker.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ══ -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <div class="footer-logo">RANSILU RADIO</div>
+                <p>Sri Lanka's favorite web radio — music that connects us all.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="ph-fill ph-facebook-logo"></i></a>
+                    <a href="#"><i class="ph-fill ph-youtube-logo"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h5>Quick Links</h5>
+                <ul>
+                    <li><a href="../">Ransilu Home</a></li>
+                    <li><a href="../music/">Ransilu Music</a></li>
+                    <li><a href="./programs/">Programs</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Contact</h5>
+                <ul>
+                    <li><a href="mailto:radio@ransilu.com">radio@ransilu.com</a></li>
+                    <li><a href="tel:+94112345678">+94 11 234 5678</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="footer-copy" style="margin:1.5rem auto 0; text-align:center; color:#94a3b8; font-size:0.8rem; letter-spacing:0.6px;">© 2026 KeyProduction. All rights reserved.</p>
+    </footer>
+
+    <!-- ══ AUDIO ══ -->
+    <audio id="radioAudio" preload="none">
+        <source src="https://stream.live.vc.bbcmedia.co.uk/bbc_world_service" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Player
+        const audio = document.getElementById('radioAudio');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const volSlider = document.getElementById('volSlider');
+        const waveform = document.getElementById('waveform');
+        let playing = false;
+
+        playBtn.addEventListener('click', () => {
+            if (playing) {
+                audio.pause(); playing = false;
+                playIcon.className = 'ph-fill ph-play';
+                waveform.classList.remove('active');
+            } else {
+                audio.play().then(() => {
+                    playing = true;
+                    playIcon.className = 'ph-fill ph-pause';
+                    waveform.classList.add('active');
+                }).catch(() => {
+                    playing = false;
+                    playIcon.className = 'ph-fill ph-play';
+                    waveform.classList.remove('active');
+                });
+            }
+        });
+
+        audio.addEventListener('error', () => {
+            playing = false;
+            playIcon.className = 'ph-fill ph-play';
+            waveform.classList.remove('active');
+        });
+
+        volSlider.addEventListener('input', () => { audio.volume = volSlider.value / 100; });
+
+        // Waveform animation
+        const bars = waveform.querySelectorAll('span');
+        (function animWave() {
+            bars.forEach((b, i) => {
+                const base = 12;
+                const h = base + Math.sin(Date.now() / 250 + i * 0.9) * (base * 0.7);
+                b.style.height = Math.max(4, h) + 'px';
+            });
+            requestAnimationFrame(animWave);
+        })();
+
+        // Scroll animations
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.schedule-card, .feature-card, .section-header, .hero-left > *, .player-card').forEach(el => {
+            el.classList.add('anim-enter');
+            obs.observe(el);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                const t = document.querySelector(a.getAttribute('href'));
+                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Stats bar animation
+        const statsBar = document.querySelector('.stats-bar');
+        const statNumbers = document.querySelectorAll('.stat-number');
+        let statsAnimated = false;
+
+        const animateStatNumbers = () => {
+            if (statsAnimated) return;
+            statsAnimated = true;
+
+            statNumbers.forEach((el) => {
+                const target = parseFloat(el.dataset.value || '0');
+                const suffix = el.dataset.suffix || '';
+                const hasDecimal = String(target).includes('.');
+                const start = performance.now();
+                const duration = 1250;
+
+                const tick = (now) => {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = target * eased;
+
+                    if (hasDecimal) {
+                        el.textContent = `${current.toFixed(1)}${suffix}`;
+                    } else {
+                        el.textContent = `${Math.round(current)}${suffix}`;
+                    }
+
+                    if (progress < 1) requestAnimationFrame(tick);
+                };
+
+                requestAnimationFrame(tick);
+            });
+        };
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                statsBar.classList.add('in-view');
+                animateStatNumbers();
+                statsObserver.unobserve(entry.target);
+            });
+        }, { threshold: 0.3, rootMargin: '0px 0px -30px 0px' });
+
+        if (statsBar) statsObserver.observe(statsBar);
+    </script>
+</body>
+</html>
