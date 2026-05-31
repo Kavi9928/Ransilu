@@ -1,34 +1,6 @@
+import { put, get } from '@vercel/blob';
 import fs from 'fs/promises';
 import path from 'path';
-import { put, get } from '@vercel/blob';
-
-const BLOB_KEY = 'store.json';
-
-async function getBlobData() {
-    try {
-        const options = process.env.BLOB_READ_WRITE_TOKEN ? { token: process.env.BLOB_READ_WRITE_TOKEN } : {};
-        const blob = await get(BLOB_KEY, options);
-        if (blob) return await blob.text();
-    } catch (e) {
-        console.log('Blob read fallback:', e.message);
-    }
-    return null;
-}
-
-async function setBlobData(data) {
-    try {
-        if (!process.env.BLOB_READ_WRITE_TOKEN) {
-            console.error('BLOB_READ_WRITE_TOKEN not set');
-            return false;
-        }
-        const options = { token: process.env.BLOB_READ_WRITE_TOKEN, access: 'public' };
-        await put(BLOB_KEY, data, options);
-        return true;
-    } catch (e) {
-        console.error('Blob write error:', e.message);
-        return false;
-    }
-}
 
 export default async function handler(req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -55,7 +27,17 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
         try {
-            let data = await getBlobData();
+            let data;
+
+            // Try Blob first
+            try {
+                const blob = await get('store.json');
+                if (blob) {
+                    data = await blob.text();
+                }
+            } catch (e) {
+                // Fallback to filesystem
+            }
 
             if (!data) {
                 for (const p of paths) {
@@ -93,13 +75,12 @@ export default async function handler(req, res) {
             };
 
             const dataJson = JSON.stringify(storeData, null, 2);
-            const blobSuccess = await setBlobData(dataJson);
 
-            if (!blobSuccess) {
-                return res.status(503).json({
-                    message: 'Vercel Blob not configured. Set up persistent storage at https://vercel.com/docs/storage/vercel-blob/quickstart',
-                    data: storeData
-                });
+            try {
+                await put('store.json', dataJson, { access: 'public' });
+            } catch (blobErr) {
+                console.error('Blob error:', blobErr.message);
+                throw blobErr;
             }
 
             return res.status(200).json({
@@ -108,7 +89,11 @@ export default async function handler(req, res) {
             });
         } catch (err) {
             console.error('Error saving store data:', err);
-            return res.status(500).json({ message: 'Failed to save store data', error: err.message });
+            return res.status(500).json({
+                message: 'Failed to save store data',
+                error: err.message,
+                details: err.toString()
+            });
         }
     }
 
