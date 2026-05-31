@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Ransilu.com — Sri Lanka's premier entertainment universe. Live Radio, Award-winning Teledramas, and the nation's top Record Label.">
+    <meta name="keywords" content="Ransilu, Sri Lanka, Entertainment, Music, Radio, Teledrama, Sinhala">
+    <title>Ransilu | Sri Lanka's Entertainment Universe</title>
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;700;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/bento.css">
+
+    <!-- GSAP + ScrollTrigger (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+</head>
+
+<body>
+
+    <!-- ══ CINEMATIC PRELOADER ══ -->
+    <div id="preloader">
+        <div class="pre-inner">
+            <div class="pre-logo"><span class="logo-r">R</span><span class="logo-rest">ansilu</span></div>
+            <div class="pre-tagline">Entertainment Universe</div>
+            <div class="pre-bar">
+                <div class="pre-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ PAGE TRANSITION OVERLAY ══ -->
+    <div id="page-transition"></div>
+
+    <!-- ══ NAVBAR ══ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#/home" class="logo-box" aria-label="Ransilu Home">
+                <div class="logo-circle"><span class="logo-r">R</span></div>
+                <div class="logo-text">RANSILU</div>
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#/home" class="nav-link" data-view="home">Home</a></li>
+                <li><a href="https://music-one-gray.vercel.app/" class="nav-link">Record Label</a></li>
+                <li><a href="#/cartoon" class="nav-link" data-view="cartoon">Cartoon</a></li>
+                <li><a href="#/teledrama" class="nav-link" data-view="teledrama">Teledrama</a></li>
+                <li><a href="#/about" class="nav-link" data-view="about">About Us</a></li>
+            </ul>
+            
+            <a href="./radio/" class="live-radio-btn">
+                <span class="live-dot-nav"></span> Live Radio
+            </a>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ══ PERSISTENT AUDIO ══ -->
+    <audio id="radio-audio" preload="none">
+        <source src="https://stream.ecard.fm/radio/8020/radio.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- ══ GLOBAL RADIO PLAYER BAR ══ -->
+    <div id="global-player" class="global-player hidden">
+        <div class="gp-left">
+            <div class="gp-icon" id="gp-icon"><i class="ph ph-music-notes"></i></div>
+            <div>
+                <div class="gp-title">Ransilu Web Radio</div>
+                <div class="gp-status">
+                    <span class="live-dot"></span> LIVE
+                </div>
+            </div>
+        </div>
+        <div class="gp-waves" id="gp-waves">
+            <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <button id="global-play-btn" class="gp-btn" aria-label="Play/Pause">
+            <i class="ph ph-play"></i>
+        </button>
+    </div>
+
+    <!-- ══ MAIN APP CONTENT ══ -->
+    <main id="app-content"></main>
+
+    <!-- ══ FOOTER ══ -->
+    <footer class="footer" id="site-footer">
+        <div class="footer-grid">
+            <!-- Brand -->
+            <div class="footer-col brand-col">
+                <div class="footer-logo">RANSILU</div>
+                <div class="footer-sub-logo">Ransilu Enterprises</div>
+                <p class="footer-desc">Sri Lanka's premier entertainment network — music, drama, and radio, united in one universe.</p>
+                <div class="footer-social">
+                    <a href="#" class="soc-btn" title="Facebook"><i class="ph-fill ph-facebook-logo"></i></a>
+                    <a href="#" class="soc-btn" title="YouTube"><i class="ph-fill ph-youtube-logo"></i></a>
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="footer-col">
+                <h5>Explore</h5>
+                <ul>
+                    <li><a href="https://music-one-gray.vercel.app/">Record Label</a></li>
+                    <li><a href="#/cartoon">Cartoon</a></li>
+                    <li><a href="#/teledrama">Teledrama</a></li>
+                    <li><a href="#/artists">Artists</a></li>
+                    <li><a href="#/about">About Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Contact Us</h5>
+                <ul>
+                    <li><a href="mailto:info@ransilu.com">info@ransilu.com</a></li>
+                    <li><a href="tel:+94112345678">+94 11 234 5678</a></li>
+                    <li><a href="tel:+94112345679">+94 11 234 5679</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="footer-copy" style="margin:1.5rem auto 0; text-align:center; color:#94a3b8; font-size:0.8rem; letter-spacing:0.6px;">© 2026 KeyProduction. All rights reserved.</p>
+    </footer>
+
+    <!-- ══ VIEWS ══ -->
+    <script src="js/views/home.js"></script>
+    <script src="js/views/label.js"></script>
+    <script src="js/views/teledrama.js"></script>
+    <script src="js/views/artists.js"></script>
+    <script src="js/views/cartoon.js"></script>
+    <script src="js/views/radio.js"></script>
+    <script src="js/views/about.js"></script>
+    <script src="js/views/contact.js"></script>
+    <!-- ══ APP CORE ══ -->
+    <script src="js/app.js"></script>
+</body>
+
+</html>
