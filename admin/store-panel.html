@@ -395,7 +395,8 @@
         if (!token || !isTokenValid(token)) {
             localStorage.removeItem('admin_token');
             localStorage.removeItem('admin_user');
-            window.location.href = './index.html';
+            window.location.replace('/admin/');
+            throw new Error('Session invalid — redirecting to login');
         }
 
         const loadingState = document.getElementById('loadingState');
@@ -554,7 +555,7 @@
                     localStorage.removeItem('admin_token');
                     localStorage.removeItem('admin_user');
                     alert('Your session has expired. Please log in again.');
-                    window.location.href = './index.html';
+                    window.location.href = '/admin/';
                 } else {
                     const data = await response.json().catch(() => ({}));
                     showModalError('Failed to save product' + (data.message ? ': ' + data.message : ''));

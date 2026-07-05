@@ -189,9 +189,19 @@
             }
         });
 
-        // Redirect if already logged in
-        if (localStorage.getItem('admin_token')) {
-            window.location.href = './dashboard.html';
+        // Redirect if already logged in with a valid (unexpired) session
+        const existingToken = localStorage.getItem('admin_token');
+        if (existingToken) {
+            let valid = false;
+            try {
+                valid = JSON.parse(atob(existingToken)).exp > Date.now();
+            } catch (err) {}
+            if (valid) {
+                window.location.href = './dashboard.html';
+            } else {
+                localStorage.removeItem('admin_token');
+                localStorage.removeItem('admin_user');
+            }
         }
     </script>
 </body>
