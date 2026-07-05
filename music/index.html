@@ -313,6 +313,45 @@
             observer.observe(el);
         });
 
+        // Render store products from the admin panel data so edits show
+        // here; the static cards above remain as a fallback.
+        (async () => {
+            try {
+                const sources = [
+                    '/api/content/store',
+                    'https://ransilu.vercel.app/api/content/store',
+                    '../data/store.json'
+                ];
+                let data = null;
+                for (const src of sources) {
+                    try {
+                        const response = await fetch(src, { cache: 'no-store' });
+                        if (!response.ok) continue;
+                        const candidate = await response.json();
+                        if (candidate && Array.isArray(candidate.products)) { data = candidate; break; }
+                    } catch (err) {
+                        // Try the next source
+                    }
+                }
+                if (!data) return;
+                const products = data.products || [];
+                if (!products.length) return;
+                const formatLabel = f => f === 'cd' ? 'CD' : f.charAt(0).toUpperCase() + f.slice(1);
+                document.getElementById('productsGrid').innerHTML = products.map(product => `
+                    <article class="product-card anim-enter visible" data-type="${product.type}" data-format="${product.format}" data-search="${product.search}">
+                        <img class="product-cover" src="${product.image}" alt="${product.title}">
+                        <div class="product-body">
+                            <div class="product-meta"><span class="type-pill">${product.type.charAt(0).toUpperCase() + product.type.slice(1)}</span><span class="price">${formatLabel(product.format)}</span></div>
+                            <div class="product-title">${product.title}</div>
+                            <div class="product-sub">${product.artist}</div>
+                        </div>
+                    </article>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading store data:', error);
+            }
+        })();
+
         const artistSearchForm = document.getElementById('artist-search');
 
         artistSearchForm?.addEventListener('submit', e => {

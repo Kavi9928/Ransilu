@@ -2,22 +2,62 @@ import { put, get } from '@vercel/blob';
 import fs from 'fs/promises';
 import path from 'path';
 
-export default async function handler(req, res) {
-    res.setHeader('Content-Type', 'application/json');
+const BLOB_KEY = 'store.json';
 
-    const token = req.headers.authorization?.replace('Bearer ', '');
+// The Blob store may be configured as private or public; try both.
+const ACCESS_MODES = ['private', 'public'];
 
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
+async function readBlob() {
+    for (const access of ACCESS_MODES) {
+        try {
+            const result = await get(BLOB_KEY, { access, useCache: false });
+            if (result && result.stream) {
+                return await new Response(result.stream).text();
+            }
+        } catch (err) {
+            // Try the next access mode, then fall back to bundled files
+        }
     }
+    return null;
+}
 
+async function writeBlob(json) {
+    const options = {
+        addRandomSuffix: false,
+        allowOverwrite: true,
+        cacheControlMaxAge: 60,
+        contentType: 'application/json',
+    };
+    let lastErr;
+    for (const access of ACCESS_MODES) {
+        try {
+            return await put(BLOB_KEY, json, { ...options, access });
+        } catch (err) {
+            lastErr = err;
+        }
+    }
+    throw lastErr;
+}
+
+function isValidToken(req) {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    if (!token) return false;
     try {
         const decoded = JSON.parse(Buffer.from(token, 'base64').toString());
-        if (decoded.exp < Date.now()) {
-            return res.status(401).json({ message: 'Token expired' });
-        }
+        return decoded.exp > Date.now();
     } catch (err) {
-        return res.status(401).json({ message: 'Invalid token' });
+        return false;
+    }
+}
+
+export default async function handler(req, res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(204).end();
     }
 
     const paths = [
@@ -26,18 +66,10 @@ export default async function handler(req, res) {
     ];
 
     if (req.method === 'GET') {
+        // Public: the websites read store data from here, so admin edits
+        // saved to Blob show up without a redeploy.
         try {
-            let data;
-
-            // Try Blob first
-            try {
-                const blob = await get('store.json');
-                if (blob) {
-                    data = await blob.text();
-                }
-            } catch (e) {
-                // Fallback to filesystem
-            }
+            let data = await readBlob();
 
             if (!data) {
                 for (const p of paths) {
@@ -54,7 +86,7 @@ export default async function handler(req, res) {
                 return res.status(404).json({ message: 'Store data not found' });
             }
 
-            return res.status(200).json(JSON.parse(data));
+            return res.status(200).json(JSON.parse(data.replace(/^﻿/, '')));
         } catch (err) {
             console.error('Error reading store data:', err);
             return res.status(500).json({ message: 'Failed to read store data' });
@@ -62,6 +94,10 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
+        if (!isValidToken(req)) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
         try {
             const { products, collections } = req.body;
 
@@ -74,14 +110,7 @@ export default async function handler(req, res) {
                 collections: collections || []
             };
 
-            const dataJson = JSON.stringify(storeData, null, 2);
-
-            try {
-                await put('store.json', dataJson);
-            } catch (blobErr) {
-                console.error('Blob error:', blobErr.message);
-                throw blobErr;
-            }
+            await writeBlob(JSON.stringify(storeData, null, 2));
 
             return res.status(200).json({
                 message: 'Store data updated successfully',
@@ -91,8 +120,7 @@ export default async function handler(req, res) {
             console.error('Error saving store data:', err);
             return res.status(500).json({
                 message: 'Failed to save store data',
-                error: err.message,
-                details: err.toString()
+                error: err.message
             });
         }
     }

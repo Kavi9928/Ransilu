@@ -473,7 +473,17 @@
         const token = localStorage.getItem('admin_token');
         const user = localStorage.getItem('admin_user');
 
-        if (!token || !user) {
+        function isTokenValid(t) {
+            try {
+                return JSON.parse(atob(t)).exp > Date.now();
+            } catch (err) {
+                return false;
+            }
+        }
+
+        if (!token || !user || !isTokenValid(token)) {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
             window.location.href = './index.html';
         }
 
@@ -537,6 +547,7 @@
 
         // Store Products Management
         let storeProducts = [];
+        let storeCollections = [];
         let editingIndex = null;
 
         const productModal = document.getElementById('productModal');
@@ -555,9 +566,12 @@
             table.style.display = 'none';
 
             try {
-                const response = await fetch('/data/store.json');
+                // Load from the API (live Blob data); fall back to the static file.
+                let response = await fetch('/api/content/store', { cache: 'no-store' });
+                if (!response.ok) response = await fetch('/data/store.json', { cache: 'no-store' });
                 const data = await response.json();
                 storeProducts = data.products || [];
+                storeCollections = data.collections || [];
 
                 if (storeProducts.length === 0) {
                     loading.innerHTML = '<p style="color: #64748b;">No products yet.</p>';
@@ -630,6 +644,11 @@
                 search: document.getElementById('productSearch').value
             };
 
+            if (/unsplash\.com\/photos\//.test(product.image)) {
+                alert('That is a link to an Unsplash page, not an image. Right-click the photo, choose "Copy image address" and paste a URL starting with https://images.unsplash.com/');
+                return;
+            }
+
             if (editingIndex !== null) {
                 const id = storeProducts[editingIndex].id;
                 storeProducts[editingIndex] = { id, ...product };
@@ -650,13 +669,19 @@
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + token
                     },
-                    body: JSON.stringify({ products: storeProducts })
+                    body: JSON.stringify({ products: storeProducts, collections: storeCollections })
                 });
 
                 if (response.ok) {
                     loadStoreProducts();
+                } else if (response.status === 401) {
+                    localStorage.removeItem('admin_token');
+                    localStorage.removeItem('admin_user');
+                    alert('Your session has expired. Please log in again.');
+                    window.location.href = './index.html';
                 } else {
-                    alert('Failed to save products');
+                    const data = await response.json().catch(() => ({}));
+                    alert('Failed to save products' + (data.message ? ': ' + data.message : ''));
                 }
             } catch (err) {
                 alert('Error: ' + err.message);

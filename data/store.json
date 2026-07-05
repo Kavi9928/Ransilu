@@ -2,11 +2,11 @@
   "products": [
     {
       "id": "ransilu-classics",
-      "type": "album",
-      "format": "cd",
       "title": "Ransilu Classics",
       "artist": "Nuwan Perera",
-      "image": "https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=700&auto=format&fit=crop",
+      "type": "album",
+      "format": "cd",
+      "image": "https://images.unsplash.com/photo-1558098329-a11cff621064?w=700&auto=format&fit=crop",
       "search": "Ransilu Classics Nuwan"
     },
     {
@@ -73,24 +73,5 @@
       "search": "Street Pulse Prabath"
     }
   ],
-  "collections": [
-    {
-      "id": "classic-sinhala",
-      "title": "Classic Sinhala Collection",
-      "description": "Golden-era hits and remastered favorites.",
-      "image": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1000&auto=format&fit=crop"
-    },
-    {
-      "id": "studio-essentials",
-      "title": "Studio Essentials",
-      "description": "Top-chart albums from Ransilu signature artists.",
-      "image": "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1000&auto=format&fit=crop"
-    },
-    {
-      "id": "weekend-singles",
-      "title": "Weekend Singles Mix",
-      "description": "Fresh singles for relaxed evenings and road trips.",
-      "image": "https://images.unsplash.com/photo-1601614725350-ab19b4cfb268?w=1000&auto=format&fit=crop"
-    }
-  ]
+  "collections": []
 }

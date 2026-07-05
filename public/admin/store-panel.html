@@ -383,7 +383,18 @@
 
     <script>
         const token = localStorage.getItem('admin_token');
-        if (!token) {
+
+        function isTokenValid(t) {
+            try {
+                return JSON.parse(atob(t)).exp > Date.now();
+            } catch (err) {
+                return false;
+            }
+        }
+
+        if (!token || !isTokenValid(token)) {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
             window.location.href = './index.html';
         }
 
@@ -398,6 +409,7 @@
         const modalErrorMsg = document.getElementById('modalErrorMsg');
 
         let products = [];
+        let collections = [];
         let currentEditId = null;
 
         // Load products on page load
@@ -405,9 +417,12 @@
 
         async function loadProducts() {
             try {
-                const response = await fetch('/data/store.json');
+                // Load from the API (live Blob data); fall back to the static file.
+                let response = await fetch('/api/content/store', { cache: 'no-store' });
+                if (!response.ok) response = await fetch('/data/store.json', { cache: 'no-store' });
                 const data = await response.json();
                 products = data.products || [];
+                collections = data.collections || [];
 
                 loadingState.style.display = 'none';
 
@@ -500,6 +515,11 @@
                 search: document.getElementById('productSearch').value
             };
 
+            if (/unsplash\.com\/photos\//.test(formData.image)) {
+                showModalError('That is a link to an Unsplash page, not an image. Right-click the photo, choose "Copy image address" and paste a URL starting with https://images.unsplash.com/');
+                return;
+            }
+
             if (currentEditId) {
                 // Update existing product
                 const idx = products.findIndex(p => p.id === currentEditId);
@@ -523,15 +543,21 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ products })
+                    body: JSON.stringify({ products, collections })
                 });
 
                 if (response.ok) {
                     closeModal();
                     loadProducts();
                     showSuccess('Product saved successfully');
+                } else if (response.status === 401) {
+                    localStorage.removeItem('admin_token');
+                    localStorage.removeItem('admin_user');
+                    alert('Your session has expired. Please log in again.');
+                    window.location.href = './index.html';
                 } else {
-                    showModalError('Failed to save product');
+                    const data = await response.json().catch(() => ({}));
+                    showModalError('Failed to save product' + (data.message ? ': ' + data.message : ''));
                 }
             } catch (err) {
                 showModalError('Error saving product');
